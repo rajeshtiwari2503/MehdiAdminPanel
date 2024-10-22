@@ -18,7 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
  
 import { Collapse } from '@mui/material';
-import { AccountBalance, AccountCircle, Analytics,  CategoryRounded,  Dashboard, DeveloperMode, ExpandLess, ExpandMore, Feedback,  Logout, NotificationsNone, Payment, Person,   Report    } from '@mui/icons-material';
+import { AccountBalance, AccountCircle, Analytics,  CategoryRounded,  Dashboard, DeveloperMode, ExpandLess, ExpandMore, Feedback,  LocalMall,  Logout, NotificationsNone, Payment, Person,   Report    } from '@mui/icons-material';
  
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
@@ -248,7 +248,7 @@ function Sidenav(props) {
             <ListItem disablePadding onClick={() => { router.push("/orders") }} className={pathname.startsWith("/orders") ? "bg-[#f1f5f9] text-sky-600 pl-2 rounded-tl-full rounded-bl-full" : "text-slate-700 pl-2"}>
               <ListItemButton>
                 <ListItemIcon className={pathname.startsWith("/orders") ? "bg-[#f1f5f9] text-[#007BFF]" : "text-slate-700"}>
-                  <Dashboard style={{ color: pathname.startsWith('/orders') ? '#007BFF' : '#64748b' }} />
+                  <LocalMall style={{ color: pathname.startsWith('/orders') ? '#007BFF' : '#64748b' }} />
                 </ListItemIcon  >
                 <ListItemText primary={"Orders"} />
 

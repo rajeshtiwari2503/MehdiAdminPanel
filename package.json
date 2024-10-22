@@ -31,8 +31,10 @@
     "react-loader-spinner": "^6.1.6",
     "react-rating": "^2.0.5",
     "react-select": "^5.8.0",
+    "react-slick": "^0.30.2",
     "react-type-animation": "^3.2.0",
     "resend": "^2.0.0",
+    "slick-carousel": "^1.8.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
