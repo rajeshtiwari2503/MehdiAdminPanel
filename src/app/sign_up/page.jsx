@@ -19,7 +19,7 @@ const SignUp = () => {
 
   const [loading, setLoading] = useState(false)
 
-  const regData = ["BRAND", "CUSTOMER", "SERVICE CENTER", "DEALER"]
+  const regData = [  "CUSTOMER", "SERVICE PROVIDER" ]
 
   const [selectedItem, setSelectedItem] = useState("CUSTOMER");
 
