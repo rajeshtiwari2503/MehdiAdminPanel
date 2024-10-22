@@ -51,7 +51,7 @@ const Header = () => {
         {/* Logo and Brand */}
         <div className="flex items-center space-x-1">
           <img
-            src="/logo.png" // Add your logo path here
+            src="/Logo.png" // Add your logo path here
             alt="Mehandi Logo"
             className="w-28 h-14 object-cover rounded-md"
           />

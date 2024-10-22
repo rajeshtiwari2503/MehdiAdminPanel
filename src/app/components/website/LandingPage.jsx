@@ -10,7 +10,7 @@ const LandingPage = () => {
   return (
     <>
       <Layout />
-      <main className="bg-white ">
+      <main className="bg-white px-10 ">
         {/* Welcome Section */}
         <section className="text-center">
           <h2 className="text-4xl font-bold text-green-700 mb-4">Welcome to Mehandi Designs</h2>
