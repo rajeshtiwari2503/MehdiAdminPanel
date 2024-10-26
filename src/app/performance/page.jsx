@@ -3,7 +3,7 @@ import React from 'react'
 import Sidenav from '../components/Sidenav'
  
 import http_request from "../../../http-request"
-import TechnicianDashboard from '../dashboard/technicianDashboard'
+ 
  
 
 
@@ -46,11 +46,7 @@ const Performance = () => {
   return (
     <Sidenav  >
       <>
-        { 
-                   value?.user?.role === "TECHNICIAN" ?
-                    <TechnicianDashboard performance={true} dashData={dashData} userData={value?.user} />
-                      : ""
-        }
+       <div>ram</div>
       </>
     </Sidenav>
   )
