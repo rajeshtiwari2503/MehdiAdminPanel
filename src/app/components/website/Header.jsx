@@ -41,11 +41,11 @@ const Header = () => {
 
   return (
     <header
-      className={`p-4 shadow-lg transition-all duration-300 ${
-        isSticky
-          ? 'fixed top-0 left-0 w-full bg-gradient-to-r from-amber-700 to-yellow-500 shadow-md z-50'
-          : 'bg-gradient-to-r from-amber-700 to-yellow-500'
-      }`}
+    className={`p-2 shadow-lg transition-all duration-300 ${
+      isSticky
+        ? 'fixed top-0 left-0 w-full bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 shadow-md z-50'
+        : 'bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400'
+    }`}
     >
       <nav className="container mx-auto flex justify-between items-center">
         {/* Logo and Brand */}
