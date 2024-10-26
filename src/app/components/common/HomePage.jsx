@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Dashboard from '@/app/dashboard/page';
-import SignIn from '@/app/sign_in/page';
 import Hero from '../website/Hero';
 
 
@@ -16,12 +15,15 @@ const HomePageCRM = () => {
             setValue(JSON.parse(storedValue));
         }
     }, []);
+
+    // console.log(value);
+    
     return (
         <main className="   ">
 
-            {value?.user?.role === "ADMIN" || value?.user?.role === "BRAND" || value?.user?.role === "SERVICE" || value?.user?.role === "DEALER" || value?.user?.role === "USER"|| value?.user?.role === "TECHNICIAN"
-                ? <Hero  />
-                // : <SignIn />
+            {value?.user?.role === "ADMIN"  
+                ? <Dashboard  />
+                
                 : <Hero />
             }
         </main>

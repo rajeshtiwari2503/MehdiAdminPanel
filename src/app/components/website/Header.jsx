@@ -1,11 +1,13 @@
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for hamburger menu
 
 const Header = () => {
   // Simulate login state, replace with actual authentication logic
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  
+  const router=useRouter()
   // Mobile menu toggle state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -32,11 +34,22 @@ const Header = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const [value, setValue] = useState("");
 
+  useEffect(() => {
+      const storedValue = localStorage.getItem("user");
+      if (storedValue) {
+        setIsLoggedIn(true)
+          setValue(JSON.parse(storedValue));
+      }
+  }, []);
+
+ 
   // Function to handle logout (replace with actual logout logic)
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    // Add logout functionality, like clearing token/session
+    setIsLoggedIn(false)
+    localStorage.removeItem("user")
+    router.push("/")
   };
 
   return (
@@ -86,8 +99,8 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <li>
-                <Link href="#order" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
-                  Order
+                <Link href="myOrders" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
+                 My  Orders
                 </Link>
               </li>
               <li>

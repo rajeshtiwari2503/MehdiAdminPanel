@@ -1,6 +1,5 @@
 import React from 'react';
 import Slider from 'react-slick';
-// In your _app.js or index.js file
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -8,7 +7,7 @@ const testimonials = [
   {
     name: "Alice Johnson",
     feedback: "The Mehandi designs are absolutely stunning! I received so many compliments at the event.",
-    image: "/Logo.png", // Add image path here
+    image: "/Logo.png",
   },
   {
     name: "Bob Smith",
@@ -36,6 +35,14 @@ const TestimonialSlider = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (

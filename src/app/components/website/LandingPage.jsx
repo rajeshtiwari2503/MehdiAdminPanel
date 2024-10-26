@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import Gallery from "./Gallary";
 import Layout from "./HeaderLayout";
 import TestimonialSlider from "./Testomonials";
+import DesignSection from "./DesignSection";
 
 
 
@@ -13,9 +14,12 @@ const LandingPage = () => {
       <main className="bg-white px-10 ">
         {/* Welcome Section */}
         <section className="text-center">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4">
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4">
             Welcome to Mehandi Designs
-          </h2>
+          </h1>
+          <h3 className="text-xl font-bold   text-red-500   mb-4">
+         S Mehndi है जहाँ खुशियाँ हैं वहाँ 
+          </h3>
           <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-8">
             Explore our beautiful, traditional, and modern Mehandi designs for all occasions.
           </p>
@@ -28,25 +32,7 @@ const LandingPage = () => {
         </section>
 
         {/* Services Section */}
-        <section id="services" className="mt-12">
-          <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 mb-4">
-            Our Services
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-4 bg-white shadow-md rounded-lg">
-              <h4 className="text-2xl font-bold mb-2">Bridal Mehandi</h4>
-              <p>Intricate designs for brides to enhance their special day.</p>
-            </div>
-            <div className="p-4 bg-white shadow-md rounded-lg">
-              <h4 className="text-2xl font-bold mb-2">Party Mehandi</h4>
-              <p>Modern and trendy designs for any party or celebration.</p>
-            </div>
-            <div className="p-4 bg-white shadow-md rounded-lg">
-              <h4 className="text-2xl font-bold mb-2">Traditional Mehandi</h4>
-              <p>Beautiful traditional patterns for festivals and family events.</p>
-            </div>
-          </div>
-        </section>
+       <DesignSection />
 
         <section className="bg-gradient-to-r rounded-md from-red-700 via-yellow-600 to-yellow-400 mt-12 py-10 text-white text-center">
           <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>

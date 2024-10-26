@@ -197,7 +197,7 @@ function Sidenav(props) {
  
   const handleLogout = () => {
     localStorage.removeItem("user")
-    router.push("/sign_in")
+    router.push("/")
   }
 
  

@@ -103,10 +103,10 @@ const DesignList = (props) => {
     <div>
       <Toaster />
       <div className='flex justify-between items-center mb-3'>
-        <div className='font-bold text-2xl'>Product Information</div>
+        <div className='font-bold text-2xl'>Design Information</div>
         <div onClick={handleAdd} className='flex bg-[#0284c7] hover:bg-[#5396b9] hover:text-black rounded-md p-2 cursor-pointer text-white justify-between items-center '>
           <Add style={{ color: "white" }} />
-          <div className=' ml-2 '>Add Product</div>
+          <div className=' ml-2 '>Add Design</div>
         </div>
       </div>
       {!data.length > 0 ? <div className='h-[400px] flex justify-center items-center'> <ReactLoader /></div>
@@ -126,7 +126,7 @@ const DesignList = (props) => {
                   Description
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Title</TableCell>
+              <TableCell>Price</TableCell>
               <TableCell>Image</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Actions</TableCell>
@@ -138,9 +138,9 @@ const DesignList = (props) => {
               <TableRow key={index} hover>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.description}</TableCell>
-                <TableCell>{row.title}</TableCell>
+                <TableCell>{row.price}</TableCell>
                 <TableCell>
-                  <img src={row.image} alt="Product" style={{ width: 50, height: 50 }} />
+                  <img src={row.image} alt="Mehndi" style={{ width: 50, height: 50 }} />
                 </TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>
