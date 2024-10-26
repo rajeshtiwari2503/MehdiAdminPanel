@@ -45,7 +45,7 @@ const AddDesign = ({ existingDesign, RefreshData, onClose }) => {
         if (existingDesign) {
             setValue('name', existingDesign.name);
             setValue('description', existingDesign.description);
-            setValue('title', existingDesign.title);
+            setValue('price', existingDesign.price);
             setValue('image', existingDesign.image);
             setValue('status', existingDesign.status);
         }
@@ -86,16 +86,16 @@ const AddDesign = ({ existingDesign, RefreshData, onClose }) => {
                     </div>
 
                     <div className='w-[400px]'>
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-900">Title</label>
+                        <label htmlFor="price" className="block text-sm font-medium text-gray-900">Price</label>
                         <input
-                            id="title"
-                            name="title"
-                            type="text"
+                            id="price"
+                            name="price"
+                            type="number"
                             required
-                            {...register('title', { required: 'Title is required' })}
-                            className={`block w-full p-3 rounded-md border border-gray-300 ${errors.title ? 'border-red-500' : ''}`}
+                            {...register('price', { required: 'Price is required' })}
+                            className={`block w-full p-3 rounded-md border border-gray-300 ${errors.price ? 'border-red-500' : ''}`}
                         />
-                        {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+                        {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
                     </div>
 
                     <div>

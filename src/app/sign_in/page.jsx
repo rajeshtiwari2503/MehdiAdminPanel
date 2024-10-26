@@ -35,8 +35,12 @@ export default function SignIn() {
         }
 
         setLoading(false);
-        router.push("/dashboard");
-        // ToastMessage(data);
+        if (data?.user?.role === "ADMIN") {
+          router.push("/dashboard");
+        } else {
+          router.push("/");
+
+        }
       }
       else {
         // console.log(userData);
@@ -46,7 +50,12 @@ export default function SignIn() {
         // ToastMessage(data);
         //   setLoading(false);
         // router.push("/verification");
-        router.push("/dashboard");
+        if (data?.user?.role === "ADMIN") {
+          router.push("/dashboard");
+        } else {
+          router.push("/");
+
+        }
 
         // }
       }
