@@ -2,7 +2,7 @@
 "use client"
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import http_request from '../../../../../http-request'
+import http_request from '../../../../http-request'
 import Sidenav from '@/app/components/Sidenav'
 import { ToastMessage } from '@/app/components/common/Toastify';
 import { useRouter } from 'next/navigation';

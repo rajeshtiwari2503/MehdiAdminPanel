@@ -2,12 +2,12 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import http_request from '../../../../../../http-request'
+import http_request from '../../../../../http-request'
 import Sidenav from '@/app/components/Sidenav'
 import { ToastMessage } from '@/app/components/common/Toastify';
 import { useRouter } from 'next/navigation';
 import { Edit } from '@mui/icons-material';
-import UserDashboard from '@/app/dashboard/userDashboard';
+ 
 
 const CutomerDetails = ({ params }) => {
     const router = useRouter();
@@ -90,7 +90,7 @@ const CutomerDetails = ({ params }) => {
                     <h2 className="  text-xl font-bold leading-9 tracking-tight text-gray-900">
                                 Customer Information
                             </h2>
-                    <UserDashboard dashData={dashData} userData={value} />
+                    {/* <UserDashboard dashData={dashData} userData={value} /> */}
                     </div>
                 </div>
 

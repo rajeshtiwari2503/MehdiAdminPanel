@@ -60,15 +60,15 @@ const CustomerList = (props) => {
   }
 
   const handleAdd = () => {
-    router.push("/user/add")
+    router.push("/users/add")
   }
 
   const handleDetails = (id) => {
-    router.push(`/user/details/${id}`)
+    router.push(`/users/details/${id}`)
   }
 
   const handleEdit = (id) => {
-    router.push(`/user/edit/${id}`);
+    router.push(`/users/edit/${id}`);
   };
   return (
     <div>
