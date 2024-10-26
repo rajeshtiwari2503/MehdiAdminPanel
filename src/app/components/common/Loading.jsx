@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 
-export const ReactLoader = () => {
+export const ReactLoader = (props) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ export const ReactLoader = () => {
     }, []);
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div className={`flex justify-center items-center ${props?.isModel===true? "w-full mt-36":"h-screen"}  `}>
             {loading ? (
                 <ThreeDots
                     visible={true}

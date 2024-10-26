@@ -67,21 +67,21 @@ const DesignList = (props) => {
   const handleEditModalClose = () => {
     setEditModalOpen(false);
   };
-  const handleWarrantyClose = () => {
-    setIsWarranty(false);
-  };
+ 
 
   const handleAdd = (row) => {
+   
+    
     setEditData(row)
     setEditModalOpen(true);
   }
-  const handleDetails = (row) => {
-    setEditData(row)
-    setEditModalOpen(true);
-  }
+  // const handleDetails = (row) => {
+  //   setEditData(row)
+  //   setEditModalOpen(true);
+  // }
   const deleteData = async () => {
     try {
-      let response = await http_request.deleteData(`/deleteProduct/${cateId}`);
+      let response = await http_request.deleteData(`/deleteMehndiDesign/${cateId}`);
       let { data } = response;
       setConfirmBoxView(false);
       props?.RefreshData(data)
@@ -113,167 +113,53 @@ const DesignList = (props) => {
         :
         <>
           <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === '_id'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('_id')}
-                    >
-                      ID
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'productName'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('productName')}
-                    >
-                      Product
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'productDescription'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('productDescription')}
-                    >
-                      Product Description
-                    </TableSortLabel>
-                  </TableCell>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <TableSortLabel active={sortBy === 'name'} direction={sortDirection} onClick={() => handleSort('name')}>
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel active={sortBy === 'description'} direction={sortDirection} onClick={() => handleSort('description')}>
+                  Description
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Image</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
 
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'categoryName'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('categoryName')}
-                    >
-                      Category Name
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'categoryName'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('categoryName')}
-                    >
-                     Sub Category Name
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'productBrand'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('productBrand')}
-                    >
-                     Brand
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'modelNo'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('modelNo')}
-                    >
-                     Model No.
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'serialNo'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('serialNo')}
-                    >
-                   Serial No.
-                    </TableSortLabel>
-                  </TableCell>
-                  
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'warrantyStatus'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('warrantyStatus')}
-                    >
-                        Warranty In Days
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'status'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('status')}
-                    >
-                      Status
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'purchaseDate'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('purchaseDate')}
-                    >
-                      Purchase Date
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'createdAt'}
-                      direction={sortDirection}
-                      onClick={() => handleSort('createdAt')}
-                    >
-                      CreatedAt
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>Actions</TableCell>
+          <TableBody>
+            {sortedData.map((row, index) => (
+              <TableRow key={index} hover>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.description}</TableCell>
+                <TableCell>{row.title}</TableCell>
+                <TableCell>
+                  <img src={row.image} alt="Product" style={{ width: 50, height: 50 }} />
+                </TableCell>
+                <TableCell>{row.status}</TableCell>
+                <TableCell>
+                  {/* <IconButton aria-label="view" onClick={() => handleDetails('View', row)}>
+                    <Visibility color="primary" />
+                  </IconButton> */}
+                  <IconButton aria-label="edit" onClick={() => handleAdd(row)}>
+                    <EditIcon color="success" />
+                  </IconButton>
+                  <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {sortedData?.map((row) => (
-                  <TableRow key={row?.i} hover>
-                    <TableCell>{row?.i}</TableCell>
-                    <TableCell>{row?.productName}</TableCell>
-                    <TableCell>{row?.productDescription}</TableCell>
-                    <TableCell>{row?.categoryName}</TableCell>
-                    <TableCell>{row?.subCategory }</TableCell>
-                    <TableCell>{row?.productBrand}</TableCell>
-                    <TableCell>{row?.modelNo}</TableCell>
-                    <TableCell>{row?.serialNo}</TableCell>
-                    {/* <TableCell>{row?.warrantyStatus === true ? "true" : "false"}</TableCell> */}
-                    <TableCell>{row?.warrantyInDays}</TableCell>
-                    <TableCell>{row?.status}</TableCell>
-                    <TableCell>{row?.purchaseDate}</TableCell>
-                    <TableCell>{new Date(row?.createdAt)?.toLocaleString()}</TableCell>
-                    <TableCell className='flex'>
-                  <div className='flex'>
-
-                      <div onClick={() => router.push(`/serviceRequest/${row._id}`)} className="bg-blue-300 text-sm cursor-pointer text-black font-semibold rounded-md p-2 hover:bg-blue-500 hover:font-semibold hover:text-white">
-                        Request Service
-                      </div>
-                      <div onClick={()=>handleWarranty(row?.warrantyStatus)} className="ms-3 bg-blue-300 text-sm text-black font-semibold rounded-md p-2 cursor-pointer hover:bg-blue-500 hover:font-semibold hover:text-white">
-                        View Warranty
-                      </div>
-                      {/* <IconButton aria-label="view" onClick={() => handleDetails(row)} >
-                        <Visibility color='primary' />
-                      </IconButton> */}
-                      <IconButton aria-label="edit" onClick={() => handleAdd(row)}>
-                        <EditIcon color='success' />
-                      </IconButton>
-                    {  userData?.user?.role==="ADMIN" ?
-                      <IconButton aria-label="delete" onClick={() => handleDelete(row._id)}>
-                        <DeleteIcon color='error' />
-                      </IconButton>
-                      :""}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
 
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
@@ -301,7 +187,7 @@ const DesignList = (props) => {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          <AddDesign  subCategories={props?.subCategories}categories={categories} userData={userData} brands={props?.brands}existingProduct={editData} RefreshData={props?.RefreshData} onClose={handleEditModalClose} />
+          <AddDesign    userData={userData}  existingDesign={editData} RefreshData={props?.RefreshData} onClose={handleEditModalClose} />
         </DialogContent>
 
       </Dialog>
@@ -309,29 +195,7 @@ const DesignList = (props) => {
 
       <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteData} />
 
-
-      <Dialog open={isWarranty} onClose={handleWarrantyClose}>
-        <div className= {warranty?"p-3 bg-green-400 text-bold":"p-3 bg-red-400 text-bold"}>
-        <DialogTitle  > {"Warranty Status"}</DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleWarrantyClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          <div className='md:w-[350px]'>
-            <div className={warranty?"p-3 bg-green-400 text-bold":"p-3 bg-red-400 text-bold"}>{warranty? "Your product is under Warranty":"Your product is not under Warranty"}</div>
-          </div>
-        </DialogContent>
-        </div>
-      </Dialog>
+ 
     </div>
   );
 };
