@@ -20,7 +20,7 @@ const Design = () => {
   
   
     const getAllDesigns = async () => {
-      let response = await http_request.get("/getAllDesign")
+      let response = await http_request.get("/getAllMehndiDesign")
       let { data } = response;
   
       setDesigns(data)
