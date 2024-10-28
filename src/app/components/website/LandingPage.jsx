@@ -11,28 +11,30 @@ const LandingPage = () => {
   return (
     <>
       <Layout />
-      <main className="bg-white px-10 ">
+      <main className="bg-white  px-10 ms:px-4 ">
         {/* Welcome Section */}
         <section className="text-center">
           <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4">
             Welcome to Mehandi Designs
           </h1>
           <h3 className="text-xl font-bold   text-red-500   mb-4">
-         S Mehndi है जहाँ खुशियाँ हैं वहाँ 
+            S Mehndi है जहाँ खुशियाँ हैं वहाँ
           </h3>
           <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-8">
             Explore our beautiful, traditional, and modern Mehandi designs for all occasions.
           </p>
-          <a
-            href="#services"
-            className="px-6 py-3 rounded text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 border border-amber-700 hover:bg-amber-700 hover:text-white transition duration-300"
+          <div
+            className="inline-flex  cursor-pointer px-6 py-3 rounded text-amber-700 bg-white border border-amber-700 
+  hover:bg-gradient-to-r hover:from-amber-700 hover:to-yellow-500 hover:text-white transition duration-300"
           >
             Explore Services
-          </a>
+          </div>
+
+
         </section>
 
         {/* Services Section */}
-       <DesignSection />
+        <DesignSection />
 
         <section className="bg-gradient-to-r rounded-md from-red-700 via-yellow-600 to-yellow-400 mt-12 py-10 text-white text-center">
           <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
