@@ -17,7 +17,7 @@ const LandingPage = () => {
           <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4">
             Welcome to Mehandi Designs
           </h1>
-          <h3 className="text-xl font-bold   text-red-500   mb-4">
+          <h3 className="text-xl inline-flex font-bold  text-white  bg-blue-500  rounded-md px-4 p-2  mb-4">
             S Mehndi है जहाँ खुशियाँ हैं वहाँ
           </h3>
           <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-8">
