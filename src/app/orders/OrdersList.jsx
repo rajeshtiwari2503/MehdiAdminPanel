@@ -102,17 +102,20 @@ const OrdersList = (props) => {
                 <TableRow>
                   <TableCell>
                     <TableSortLabel active={sortBy === 'orderId'} direction={sortDirection} onClick={() => handleSort('orderId')}>
-                      Order ID
+                      Sr. No.
                     </TableSortLabel>
                   </TableCell>
                   <TableCell>
                     <TableSortLabel active={sortBy === 'productName'} direction={sortDirection} onClick={() => handleSort('productName')}>
-                      Product Name
+                      Design Name
                     </TableSortLabel>
                   </TableCell>
                   <TableCell>Customer Name</TableCell>
-                  <TableCell>Quantity</TableCell>
+                  <TableCell>Contact </TableCell>
+                  <TableCell>Address </TableCell>
+                  <TableCell>Email </TableCell>
                   <TableCell>Order Date</TableCell>
+                  <TableCell>Order Status</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
@@ -121,11 +124,14 @@ const OrdersList = (props) => {
               <TableBody>
                 {sortedData.map((row, index) => (
                   <TableRow key={index} hover>
-                    <TableCell>{row.orderId}</TableCell>
-                    <TableCell>{row.productName}</TableCell>
-                    <TableCell>{row.customerName}</TableCell>
-                    <TableCell>{row.quantity}</TableCell>
-                    <TableCell>{row.orderDate}</TableCell>
+                    <TableCell>{row?.i}</TableCell>
+                    <TableCell>{row.design}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.contact}</TableCell>
+                    <TableCell>{row.address}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                    <TableCell>{new Date(row.createdAt)?.toLocaleString()}</TableCell>
+                    <TableCell>{row.order}</TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>
                       <IconButton aria-label="edit" onClick={() => handleAdd(row)}>
