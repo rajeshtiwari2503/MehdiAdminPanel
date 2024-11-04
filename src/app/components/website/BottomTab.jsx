@@ -11,6 +11,10 @@ const BottomTabNavigation = () => {
         </Link>
         <Link href="#gallery" className="flex flex-col items-center text-sm hover:text-teal-500 transition-colors duration-300">
           <FaImages className="text-xl" />
+          <span>Orders</span>
+        </Link>
+        <Link href="#gallery" className="flex flex-col items-center text-sm hover:text-teal-500 transition-colors duration-300">
+          <FaImages className="text-xl" />
           <span>Gallery</span>
         </Link>
         <Link href="#testimonials" className="flex flex-col items-center text-sm hover:text-teal-500 transition-colors duration-300">

@@ -62,15 +62,19 @@ const Header = () => {
         : 'bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400'
     }`}
     >
-      <nav className="container mx-auto flex justify-between items-center">
-        {/* Logo and Brand */}
-        <div className="flex items-center space-x-1">
-          <img
-            src="/Logo.png" // Add your logo path here
-            alt="Mehandi Logo"
-            className="w-28 h-14 object-cover rounded-md"
-          />
-        </div>
+<nav className="container mx-auto flex items-center px-4">
+  {/* Logo and Brand */}
+  <div className="flex w-full md:justify-between items-center  justify-center">
+    <img
+      src="/Logo.png"
+      alt="Mehandi Logo"
+      className="w-28 h-14 object-cover rounded-md"
+    />
+  </div>
+ 
+
+
+
 
         {/* Hamburger Icon for Mobile */}
         {/* <div className="md:hidden">
@@ -115,7 +119,7 @@ const Header = () => {
             <>
               <li>
                 <Link href="/sign_in" className="border-2 border-white px-4 py-2 text-white rounded-lg font-bold hover:bg-white hover:text-teal-500 transition-all duration-300">
-                  Sign In
+                  Sign&nbsp;In
                 </Link>
               </li>
             </>
