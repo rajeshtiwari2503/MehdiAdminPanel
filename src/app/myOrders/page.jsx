@@ -1,10 +1,12 @@
  "use client";
 import React, { useEffect, useState } from 'react';
-import Header from '../components/website/Header';
+ 
 import http_request from '../../../http-request'; // Import your HTTP request function
 import { ToastMessage } from '../components/common/Toastify';
 import { ReactLoader } from '../components/common/Loading';
 import { Toaster } from 'react-hot-toast';
+import Footer from '../components/website/Footer';
+import Layout from '../components/website/HeaderLayout';
 
 const MyOrders = () => {
   const [order, setOrder] = useState(null);
@@ -77,11 +79,11 @@ const MyOrders = () => {
 
   return (
     <>
-      <Header />
+      <Layout />
       <Toaster />
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-4">My Orders</h2>
-        {loading ? <ReactLoader /> : (
+        {loading===true ? <ReactLoader /> : (
           <div>
             {user && (
               <div className="mb-4 p-4 bg-gray-100 rounded-lg">
@@ -127,7 +129,7 @@ const MyOrders = () => {
           </div>
         )}
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
