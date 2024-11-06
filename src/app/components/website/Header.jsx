@@ -85,7 +85,7 @@ const Header = () => {
 
         {/* Navigation Links */}
         <ul className={`flex space-x-6 md:flex ${isMenuOpen ? 'block' : 'hidden'} md:block`}>
-          <li>
+          {/* <li>
             <Link href="#testimonials" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
               Testimonials
             </Link>
@@ -94,9 +94,9 @@ const Header = () => {
             <Link href="#gallery" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
               Gallery
             </Link>
-          </li>
+          </li> */}
           <li>
-            <Link href="#contact" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
+            <Link href="contact" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
               Contact
             </Link>
           </li>
@@ -106,7 +106,12 @@ const Header = () => {
             <>
               <li>
                 <Link href="myOrders" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
-                 My  Orders
+                 My&nbsp;Orders
+                </Link>
+              </li>
+              <li>
+                <Link href="userProfile" className="text-white font-medium hover:text-teal-500 transition-colors duration-300">
+                 Profile
                 </Link>
               </li>
               <li>
