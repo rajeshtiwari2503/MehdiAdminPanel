@@ -13,9 +13,10 @@ import { Toaster } from 'react-hot-toast';
 import { ToastMessage } from '@/app/components/common/Toastify';
  
 import { ReactLoader } from '../components/common/Loading';
-import AddDesign from './addDesign';
+ 
+import AddCategory from './addCategory';
 
-const DesignList = (props) => {
+const CategoryList = (props) => {
 
 
   const router = useRouter()
@@ -85,7 +86,7 @@ const DesignList = (props) => {
   // }
   const deleteData = async () => {
     try {
-      let response = await http_request.deleteData(`/deleteMehndiDesign/${cateId}`);
+      let response = await http_request.deleteData(`/deleteMehndiCategory/${cateId}`);
       let { data } = response;
       setConfirmBoxView(false);
       props?.RefreshData(data)
@@ -110,7 +111,7 @@ const DesignList = (props) => {
         <div className='font-bold text-2xl'>Design Information</div>
         <div onClick={handleAdd} className='flex bg-[#0284c7] hover:bg-[#5396b9] hover:text-black rounded-md p-2 cursor-pointer text-white justify-between items-center '>
           <Add style={{ color: "white" }} />
-          <div className=' ml-2 '>Add Design</div>
+          <div className=' ml-2 '>Add Category</div>
         </div>
       </div>
       {!data.length > 0 ? <div className='h-[400px] flex justify-center items-center'> <ReactLoader /></div>
@@ -130,10 +131,7 @@ const DesignList = (props) => {
                   Description
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Image</TableCell>
-              <TableCell>Status</TableCell>
+           
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -141,15 +139,9 @@ const DesignList = (props) => {
           <TableBody>
             {sortedData.map((row, index) => (
               <TableRow key={index} hover>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.description}</TableCell>
                 <TableCell>{row.categoryName}</TableCell>
-                <TableCell>{row.price}</TableCell>
-               
-                <TableCell>
-                  <img src={row.image} alt="Mehndi" style={{ width: 50, height: 50 }} />
-                </TableCell>
-                <TableCell>{row.status}</TableCell>
+                <TableCell>{row.description}</TableCell>
+                
                 <TableCell>
                   {/* <IconButton aria-label="view" onClick={() => handleDetails('View', row)}>
                     <Visibility color="primary" />
@@ -194,7 +186,7 @@ const DesignList = (props) => {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          <AddDesign    userData={userData} categories={categories}  existingDesign={editData} RefreshData={props?.RefreshData} onClose={handleEditModalClose} />
+          <AddCategory    userData={userData}  existingDesign={editData} RefreshData={props?.RefreshData} onClose={handleEditModalClose} />
         </DialogContent>
 
       </Dialog>
@@ -207,7 +199,7 @@ const DesignList = (props) => {
   );
 };
 
-export default DesignList;
+export default CategoryList;
 
 function stableSort(array, comparator) {
   const stabilizedThis = array?.map((el, index) => [el, index]);

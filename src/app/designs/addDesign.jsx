@@ -5,18 +5,22 @@ import { Button } from '@mui/material';
 import { ToastMessage } from '@/app/components/common/Toastify';
 import { ReactLoader } from '../components/common/Loading';
 
-const AddDesign = ({ existingDesign, RefreshData, onClose }) => {
+const AddDesign = ({ existingDesign,categories, RefreshData, onClose }) => {
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
 
     const AddDesignData = async (data) => {
         try {
             setLoading(true);
-    
+            
+   const cate= categories?.find((f)=>f?._id===data?.category)
+
             // Create FormData to handle text and file data
             const formData = new FormData();
             formData.append('name', data.name);
             formData.append('description', data.description);
+            formData.append('categoryName', cate.categoryName);
+            formData.append('categoryId', cate._id);
             formData.append('price', data.price);
             formData.append('status', 'ACTIVE');  // Default status
     
@@ -49,11 +53,14 @@ const AddDesign = ({ existingDesign, RefreshData, onClose }) => {
     const onSubmit = (data) => {
         AddDesignData(data);
     };
+ 
 
     useEffect(() => {
         if (existingDesign) {
             setValue('name', existingDesign.name);
             setValue('description', existingDesign.description);
+            setValue('categoryName', existingDesign.categoryName);
+            setValue('categoryId', existingDesign.categoryId);
             setValue('price', existingDesign.price);
             setValue('status', existingDesign.status);
            
@@ -93,7 +100,24 @@ const AddDesign = ({ existingDesign, RefreshData, onClose }) => {
                         />
                         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
                     </div>
-
+                    <div>
+                        <label htmlFor="category" className="block text-sm font-medium text-gray-900">Category</label>
+                        <select
+                            id="category"
+                            name="category"
+                            required
+                            {...register('category', { required: 'Category is required' })}
+                            className={`block w-full p-3 rounded-md border border-gray-300 ${errors.category ? 'border-red-500' : ''}`}
+                        >
+                            <option value="">Select Category</option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                    {category.categoryName}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
+                    </div>
                     <div className='w-[400px]'>
                         <label htmlFor="price" className="block text-sm font-medium text-gray-900">Price</label>
                         <input
