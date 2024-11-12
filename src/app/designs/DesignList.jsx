@@ -68,8 +68,12 @@ const DesignList = (props) => {
     setEditModalOpen(false);
   };
  
-
-  const handleAdd = (row) => {
+  const handleAdd = ( ) => {
+   
+ 
+    setEditModalOpen(true);
+  }
+  const handleEdit = (row) => {
    
     
     setEditData(row)
@@ -147,10 +151,10 @@ const DesignList = (props) => {
                   {/* <IconButton aria-label="view" onClick={() => handleDetails('View', row)}>
                     <Visibility color="primary" />
                   </IconButton> */}
-                  <IconButton aria-label="edit" onClick={() => handleAdd(row)}>
+                  <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
                     <EditIcon color="success" />
                   </IconButton>
-                  <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
+                  <IconButton aria-label="delete" onClick={() => handleDelete(row?._id)}>
                     <DeleteIcon color="error" />
                   </IconButton>
                 </TableCell>
