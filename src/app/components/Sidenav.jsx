@@ -235,6 +235,15 @@ function Sidenav(props) {
 
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding onClick={() => { router.push("/category") }} className={pathname.startsWith("/category") ? "bg-[#f1f5f9] text-sky-600 pl-2 rounded-tl-full rounded-bl-full" : "text-slate-700 pl-2"}>
+              <ListItemButton>
+                <ListItemIcon className={pathname.startsWith("/category") ? "bg-[#f1f5f9] text-[#007BFF]" : "text-slate-700"}>
+                  <CategoryRounded style={{ color: pathname.startsWith('/category') ? '#007BFF' : '#64748b' }} />
+                </ListItemIcon  >
+                <ListItemText primary={"Category"} />
+
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding onClick={() => { router.push("/designs") }} className={pathname.startsWith("/designs") ? "bg-[#f1f5f9] text-sky-600 pl-2 rounded-tl-full rounded-bl-full" : "text-slate-700 pl-2"}>
               <ListItemButton>
                 <ListItemIcon className={pathname.startsWith("/designs") ? "bg-[#f1f5f9] text-[#007BFF]" : "text-slate-700"}>
@@ -244,7 +253,7 @@ function Sidenav(props) {
 
               </ListItemButton>
             </ListItem>
-            
+         
             <ListItem disablePadding onClick={() => { router.push("/orders") }} className={pathname.startsWith("/orders") ? "bg-[#f1f5f9] text-sky-600 pl-2 rounded-tl-full rounded-bl-full" : "text-slate-700 pl-2"}>
               <ListItemButton>
                 <ListItemIcon className={pathname.startsWith("/orders") ? "bg-[#f1f5f9] text-[#007BFF]" : "text-slate-700"}>
