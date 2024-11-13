@@ -132,6 +132,7 @@ const CategoryList = (props) => {
                 </TableSortLabel>
               </TableCell>
            
+              <TableCell>Image</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -141,7 +142,9 @@ const CategoryList = (props) => {
               <TableRow key={index} hover>
                 <TableCell>{row.categoryName}</TableCell>
                 <TableCell>{row.description}</TableCell>
-                
+                <TableCell>
+                  <img src={row.image} alt="Mehndi" style={{ width: 50, height: 50 }} />
+                </TableCell>
                 <TableCell>
                   {/* <IconButton aria-label="view" onClick={() => handleDetails('View', row)}>
                     <Visibility color="primary" />

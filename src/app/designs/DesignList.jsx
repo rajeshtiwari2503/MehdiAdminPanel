@@ -180,7 +180,7 @@ const DesignList = (props) => {
         </>}
       {/* Edit Modal */}
       <Dialog open={editModalOpen} onClose={handleEditModalClose}>
-        <DialogTitle>{editData?._id ? "Edit Product" : "Add Product"}</DialogTitle>
+        <DialogTitle>{editData?._id ? "Edit Design" : "Add Design"}</DialogTitle>
         <IconButton
           aria-label="close"
           onClick={handleEditModalClose}
