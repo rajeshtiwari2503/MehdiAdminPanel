@@ -130,7 +130,7 @@ const DesignList = (props) => {
                   Description
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Category</TableCell>
+              <TableCell>GroupOrder</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Image</TableCell>
               <TableCell>Status</TableCell>
@@ -143,7 +143,7 @@ const DesignList = (props) => {
               <TableRow key={index} hover>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.description}</TableCell>
-                <TableCell>{row.categoryName}</TableCell>
+                <TableCell>{row.groupOrder===true?"Yes":"No"}</TableCell>
                 <TableCell>{row.price}</TableCell>
                
                 <TableCell>
