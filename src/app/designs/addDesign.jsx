@@ -5,37 +5,34 @@ import { Button } from '@mui/material';
 import { ToastMessage } from '@/app/components/common/Toastify';
 import { ReactLoader } from '../components/common/Loading';
 
-const AddDesign = ({ existingDesign,categories, RefreshData, onClose }) => {
+const AddDesign = ({ existingDesign, categories, RefreshData, onClose }) => {
     const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm();
 
     const AddDesignData = async (data) => {
         try {
             setLoading(true);
-            
-//    const cate= categories?.find((f)=>f?._id===data?.category)
 
             // Create FormData to handle text and file data
             const formData = new FormData();
             formData.append('name', data.name);
             formData.append('description', data.description);
-            // formData.append('categoryName', cate.categoryName);
-            // formData.append('categoryId', cate._id);
             formData.append('price', data.price);
-            formData.append('status', 'ACTIVE');  // Default status
-    
+            formData.append('status', 'ACTIVE'); // Default status
+            formData.append('groupOrder', data.groupOrder || false); // Add groupOrder value
+
             // Only append image if a new image is selected
             if (data.image && data.image[0]) {
-                formData.append('image', data.image[0]);  // Attach image file if present
+                formData.append('image', data.image[0]); // Attach image file if present
             }
-    
+
             const endpoint = existingDesign?._id ? `/editDesignImage/${existingDesign._id}` : '/addMehndiDesign';
             const response = existingDesign?._id 
                 ? await http_request.patch(endpoint, formData) 
                 : await http_request.post(endpoint, formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
-    
+
             const { data: responseData } = response;
             ToastMessage(responseData);
             setLoading(false);
@@ -48,22 +45,18 @@ const AddDesign = ({ existingDesign,categories, RefreshData, onClose }) => {
             console.log(err);
         }
     };
-    
 
     const onSubmit = (data) => {
         AddDesignData(data);
     };
- 
 
     useEffect(() => {
         if (existingDesign) {
             setValue('name', existingDesign.name);
             setValue('description', existingDesign.description);
-            // setValue('categoryName', existingDesign.categoryName);
-            // setValue('categoryId', existingDesign.categoryId);
             setValue('price', existingDesign.price);
             setValue('status', existingDesign.status);
-           
+            setValue('groupOrder', existingDesign.groupOrder || false); // Set groupOrder value
         }
     }, [existingDesign, setValue]);
 
@@ -71,7 +64,7 @@ const AddDesign = ({ existingDesign,categories, RefreshData, onClose }) => {
         <div>
             {loading ? (
                 <div className='w-[300px] h-[300px]'>
-                    <ReactLoader isModel={true}/>
+                    <ReactLoader isModel={true} />
                 </div>
             ) : (
                 <form className="grid grid-cols-1 gap-4" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
@@ -100,24 +93,7 @@ const AddDesign = ({ existingDesign,categories, RefreshData, onClose }) => {
                         />
                         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
                     </div>
-                    {/* <div>
-                        <label htmlFor="category" className="block text-sm font-medium text-gray-900">Category</label>
-                        <select
-                            id="category"
-                            name="category"
-                            required
-                            {...register('category', { required: 'Category is required' })}
-                            className={`block w-full p-3 rounded-md border border-gray-300 ${errors.category ? 'border-red-500' : ''}`}
-                        >
-                            <option value="">Select Category</option>
-                            {categories.map((category) => (
-                                <option key={category._id} value={category._id}>
-                                    {category.categoryName}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
-                    </div> */}
+
                     <div className='w-[400px]'>
                         <label htmlFor="price" className="block text-sm font-medium text-gray-900">Price</label>
                         <input
@@ -141,6 +117,18 @@ const AddDesign = ({ existingDesign,categories, RefreshData, onClose }) => {
                             className="block w-full p-3 rounded-md border border-gray-300"
                         />
                         {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>}
+                    </div>
+
+                    {/* Group Order Checkbox */}
+                    <div className="flex items-center">
+                        <input
+                            id="groupOrder"
+                            name="groupOrder"
+                            type="checkbox"
+                            {...register('groupOrder')}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded"
+                        />
+                        <label htmlFor="groupOrder" className="ml-2 text-sm text-gray-900">Enable Group Order</label>
                     </div>
 
                     <Button type="submit" variant="contained" color="primary" className="mt-4">
