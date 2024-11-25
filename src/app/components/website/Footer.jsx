@@ -68,8 +68,8 @@ const Footer = () => {
           <div>
             <h2 className="text-lg font-bold mb-4">Our Office</h2>
             <p className="text-sm text-gray-200">
-              SMehndi Pvt. Ltd. <br />
-              Avadhut Nagar, Basti, Uttar Pradesh, India <br />
+              SMehndi.com <br />
+              Avdhut Nagar, Basti, Uttar Pradesh, India <br />
               PIN: 272131
             </p>
           </div>
