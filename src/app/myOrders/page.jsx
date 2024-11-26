@@ -1,12 +1,13 @@
  "use client";
 import React, { useEffect, useState } from 'react';
- 
+
 import http_request from '../../../http-request'; // Import your HTTP request function
 import { ToastMessage } from '../components/common/Toastify';
 import { ReactLoader } from '../components/common/Loading';
 import { Toaster } from 'react-hot-toast';
 import Footer from '../components/website/Footer';
 import Layout from '../components/website/HeaderLayout';
+import axios from 'axios';
 
 const MyOrders = () => {
   const [order, setOrder] = useState(null);
@@ -28,62 +29,103 @@ const MyOrders = () => {
   const fetchDesigns = async () => {
     try {
       const storedOrder = localStorage.getItem("orderM");
+      if (!storedOrder) {
+        throw new Error("No order data found in localStorage.");
+      }
+
       const userOrder = JSON.parse(storedOrder);
       setLoading(true);
+
       const response = await http_request.get(`/getOrderByUserId/${userOrder?.user?.user?._id}`);
-      const { data } = response;
-      setMyOrder(data);
+      if (response.data) {
+        setMyOrder(response.data);
+      } else {
+        throw new Error("No order data returned.");
+      }
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.error("Error fetching designs:", error);
+      ToastMessage("Failed to load orders. Please try again.");
     }
   };
 
-  const handleCreateOrder = async () => {
-    if (!order) {
-      alert("Order or user details are missing.");
-      return;
-    }
-
-    // Map fields to match the API requirements
-    const orderData = {
-      name: user?.user?.name,
-      customerId: user?.user?._id,
-      email: user?.user?.email,
-      contact: user?.user?.contact,
-      address: user?.user?.address,
-      agentName: "Agent Name Here",
-      agentId: "Agent ID Here",
-      design: order?.item?.name,
-      price: order?.item?.price,
-    };
-
+  const userPayment = async (row) => {
     try {
-      setLoading(true);
-      const response = await http_request.post('/addOrder', orderData);
-      const { data } = response;
-      localStorage.removeItem("orderM"); 
-      setRefresh(data); 
-      setOrder(null);
-      ToastMessage(data);
-      setIsOrderCreated(true);
-      setLoading(false);
-    } catch (error) {
-      ToastMessage(error);
-      setLoading(false);
-      console.error("Error creating order:", error);
-      alert("Error creating order.");
+      const userInfo = localStorage.getItem("user");
+      const userDataReq = JSON.parse(userInfo);
+      const userD = userDataReq?.user?._id;
+      console.log(row?.item);
+  
+      const amount = +(row?.item?.price) ; // Convert amount to paise (INR)
+      const resDatapay = { amount, currency: "INR" };
+      console.log(resDatapay);
+  
+      // Send the request to the backend to create the order
+      let response = await http_request.post("/addOrder", resDatapay);
+      let { data } = response;
+      console.log(data); // Check if the backend returns the correct response
+  
+      const options = {
+        key: "rzp_test_RZvXA4bkG4UQnJ", // Use your Razorpay Key ID from env variable
+        amount: amount, // Amount in paise
+        currency: "INR",
+        name: "SMEHNDI", // Your business name
+        description: "Payment for order",
+        image: "/Logo.png",
+        order_id: data.razorpayOrderId, // Use the razorpayOrderId from backend response
+        handler: async function (orderDetails) {
+          console.log(orderDetails);
+          
+          const  refOrder= { razorpayPaymentId:orderDetails?.razorpay_payment_id   , razorpayOrderId:orderDetails?.razorpay_order_id, razorpaySignature:orderDetails?.razorpay_signature } 
+          try {
+            // Send payment details to backend for verification
+            let verifyResponse = await axios.post("https://mehdiappbackend.onrender.com/verify-payment", refOrder
+             );
+  
+            let { data } = verifyResponse;
+            if (data?.status === true) {
+              ToastMessage(data.msg);
+              // RefreshData(data);
+              // onClose(true); // Close the modal or dialog
+            } else {
+              ToastMessage({status:false ,msg:"Payment verification failed."});
+            }
+          } catch (err) {
+            console.log("Payment verification error:", err);
+            ToastMessage("Payment verification failed.");
+          }
+        },
+        prefill: {
+          name: row?.user?.user?.name, // Customer's name
+          email: row?.user?.user?.email,
+          contact: row?.user?.user?.contact,
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+  
+      // Open Razorpay checkout
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (err) {
+      console.log("Payment order creation error:", err);
+      ToastMessage("An error occurred while creating the payment order.");
     }
   };
-
+  
   return (
     <>
       <Layout />
       <Toaster />
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-4">My Orders</h2>
-        {loading===true ? <ReactLoader /> : (
+        {loading === true ? <ReactLoader /> : (
           <div>
             {user && (
               <div className="mb-4 p-4 bg-gray-100 rounded-lg">
@@ -102,20 +144,21 @@ const MyOrders = () => {
                 <p>Price: {order.item?.price}</p>
                 {!isOrderCreated ? (
                   <button
-                    onClick={handleCreateOrder}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    onClick={()=>userPayment(order)}
+                    disabled={loading}
+                    className={`mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                   >
-                    Create Order
+                    {loading ? "Creating Order..." : "Create Order"}
                   </button>
                 ) : (
                   <p className="text-green-500 mt-4">Order successfully created!</p>
                 )}
               </div>
             ) : (
-              <p> </p>
+              <p>No order details found.</p>
             )}
 
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {myOrder.length > 0 ? myOrder.map((item, index) => (
                 <div key={index} className="p-4 bg-white shadow-md rounded-lg mb-6">
                   <h3 className="text-xl font-semibold mb-2">Order Details</h3>
@@ -123,7 +166,7 @@ const MyOrders = () => {
                   <p>Price: {item.price}</p>
                 </div>
               )) : (
-                <p>No order details found.</p>
+                <p>No orders found.</p>
               )}
             </div>
           </div>
