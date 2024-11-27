@@ -93,7 +93,7 @@ const MyOrders = () => {
             }
           } catch (err) {
             console.log("Payment verification error:", err);
-            ToastMessage("Payment verification failed.");
+            ToastMessage({ status: false, msg: "Payment verification failed." });
           }
         },
         prefill: {
@@ -114,7 +114,7 @@ const MyOrders = () => {
       rzp1.open();
     } catch (err) {
       console.log("Payment order creation error:", err);
-      ToastMessage("An error occurred while creating the payment order.");
+      ToastMessage({ status: false, msg: "An error occurred while creating the payment order."});
     }
   };
 
