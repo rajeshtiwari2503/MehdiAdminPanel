@@ -57,24 +57,40 @@ const SignUp = () => {
   }
 
   const onSubmit = (data) => {
+    // Validate CAPTCHA
     if (parseInt(data.captcha) !== captchaAnswer) {
-      alert('CAPTCHA answer is incorrect');
-      generateCaptcha();
+      setError('captcha', { type: 'manual', message: 'CAPTCHA is incorrect' });
+      generateCaptcha(); // Regenerate CAPTCHA if validation fails
       return;
     }
-const refData={...data,role:selectedItem==="CUSTOMER"?"CUSTOMER":"AGENT"}
+  
+    // Add role based on the selected item
+    const refData = { 
+      ...data, 
+      role: selectedItem === "CUSTOMER" ? "CUSTOMER" : "AGENT" 
+    };
+  
+    // Prepare FormData for submission
     const formData = new FormData();
-   
+  
     Object.keys(refData).forEach((key) => {
-      if (key === 'aadharImage') {
-        formData.append(key, refData[key][0]); // Append the file
+      if (key === 'aadharImage' && refData[key] instanceof FileList) {
+        // Append the first file if it's a FileList
+        formData.append(key, refData[key][0]);
+      } else if (key === 'aadharImage' && refData[key] instanceof FileList) {
+        // Handle other image files
+        formData.append('aadharImage', refData[key][0]);
       } else {
-        formData.append(key, refData[key]); // Append other form fields
+        // Append other key-value pairs
+        formData.append(key, refData[key]);
       }
     });
-
-    Regiter(formData);  
+  
+    // Call the Register function to submit the form data
+    Regiter(formData);
   };
+  
+  
 
 
   const [captchaQuestion, setCaptchaQuestion] = useState('');
@@ -177,24 +193,24 @@ const refData={...data,role:selectedItem==="CUSTOMER"?"CUSTOMER":"AGENT"}
                               </div>
                               {errors.contact && <p className="text-red-500 text-sm mt-1">{errors.contact.message}</p>}
                             </div>
-                         {selectedItem==="CUSTOMER"?""  
-                          :<div className="md:col-span-2">
-                              <label htmlFor="aadharImage" className="block text-sm font-medium leading-6 text-gray-900">
-                                Aadhaar Image
-                              </label>
-                              <div className="mt-2">
-                                <input
-                                  id="aadharImage"
-                                  name="aadharImage"
-                                  type="file"
-                                  accept="image/*"
-                                  {...register('aadharImage', { required: 'Aadhaar Image is required' })}
-                                  className="block p-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                />
+                            {selectedItem === "CUSTOMER" ? ""
+                              : <div className="md:col-span-2">
+                                <label htmlFor="aadharImage" className="block text-sm font-medium leading-6 text-gray-900">
+                                  Aadhaar Image
+                                </label>
+                                <div className="mt-2">
+                                  <input
+                                    id="aadharImage"
+                                    name="aadharImage"
+                                    type="file"
+                                    // accept="image/*"
+                                    {...register('aadharImage', { required: 'Aadhaar Image is required' })}
+                                    className="block p-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  />
+                                </div>
+                                {errors.aadharImage && <p className="text-red-500 text-sm mt-1">{errors.aadharImage.message}</p>}
                               </div>
-                              {errors.aadharImage && <p className="text-red-500 text-sm mt-1">{errors.aadharImage.message}</p>}
-                            </div>
-}
+                            }
                             <div>
                               <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                 Password
@@ -246,6 +262,26 @@ const refData={...data,role:selectedItem==="CUSTOMER"?"CUSTOMER":"AGENT"}
                                 />
                               </div>
                               {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+                            </div>
+                            <div>
+                              <label htmlFor="referralCode" className="block text-sm font-medium leading-6 text-gray-900">
+                                Referral Code
+                              </label>
+                              <div className="mt-2">
+                                <input
+                                  id="referralCode"
+                                  name="referralCode"
+                                  type="text"
+                                  {...register('referralCode', {
+                                    pattern: {
+                                      value: /^[A-Za-z0-9]{6,10}$/,
+                                      message: 'Referral code must be 6-10 alphanumeric characters'
+                                    }
+                                  })}
+                                  className={`block p-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errors.referralCode ? 'border-red-500' : ''}`}
+                                />
+                              </div>
+                              {errors.referralCode && <p className="text-red-500 text-sm mt-1">{errors.referralCode.message}</p>}
                             </div>
                             <div className=" ">
                               <label className="flex items-start">

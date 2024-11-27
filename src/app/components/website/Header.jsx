@@ -65,11 +65,12 @@ const Header = () => {
 <nav className="container mx-auto flex items-center px-4">
   {/* Logo and Brand */}
   <div className="flex w-full md:justify-between items-center  justify-center">
-    <img
+    <Link href={"/"}><img
       src="/Logo.png"
       alt="Mehandi Logo"
-      className="w-28 h-14 object-cover rounded-md"
+      className="w-28 cursor-pointer h-14 object-cover rounded-md"
     />
+    </Link>
   </div>
  
 
