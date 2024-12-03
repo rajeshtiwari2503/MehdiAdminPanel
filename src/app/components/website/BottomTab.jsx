@@ -1,43 +1,38 @@
-"use client"
+ "use client";
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
- 
+import { usePathname } from 'next/navigation'; // Hook to get the current pathname
+
 import { FaHome, FaImages, FaCommentDots, FaUser } from 'react-icons/fa';
 
 const BottomTabNavigation = () => {
-  const router = useRouter();
-  const { pathname } = router; // Get the current pathname
+  const pathname = usePathname(); // Get the current pathname
+
+  const navItems = [
+    { href: '/', label: 'Home', icon: <FaHome /> },
+    { href: '/myOrders', label: 'Orders', icon: <FaImages /> },
+    { href: '/contact', label: 'Contact', icon: <FaCommentDots /> },
+    { href: '/userProfile', label: 'Profile', icon: <FaUser /> },
+  ];
 
   return (
     <footer className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-300 z-10">
       <nav className="flex justify-between px-6 py-3 text-center text-gray-500">
-        <Link href="/" className={`flex flex-col items-center text-sm transition-colors duration-300 ${
-          pathname === '/' ? 'text-teal-500' : 'hover:text-teal-500'
-        }`}>
-          <FaHome className="text-xl" />
-          <span>Home</span>
-        </Link>
-
-        <Link href="/myOrders" className={`flex flex-col items-center text-sm transition-colors duration-300 ${
-          pathname === '/myOrders' ? 'text-teal-500' : 'hover:text-teal-500'
-        }`}>
-          <FaImages className="text-xl" />
-          <span>Orders</span>
-        </Link>
-
-        <Link href="/contact" className={`flex flex-col items-center text-sm transition-colors duration-300 ${
-          pathname === '/contact' ? 'text-teal-500' : 'hover:text-teal-500'
-        }`}>
-          <FaCommentDots className="text-xl" />
-          <span>Contact</span>
-        </Link>
-
-        <Link href="/userProfile" className={`flex flex-col items-center text-sm transition-colors duration-300 ${
-          pathname === '/userProfile' ? 'text-teal-500' : 'hover:text-teal-500'
-        }`}>
-          <FaUser className="text-xl" />
-          <span>Profile</span>
-        </Link>
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`flex flex-col items-center text-sm transition-colors duration-300 ${
+              pathname === item.href
+                ? 'text-teal-500 font-semibold border-t-2 border-teal-500'
+                : 'hover:text-teal-500'
+            }`}
+          >
+            <div className={`text-xl ${pathname === item.href ? 'text-teal-500' : ''}`}>
+              {item.icon}
+            </div>
+            <span>{item.label}</span>
+          </Link>
+        ))}
       </nav>
     </footer>
   );

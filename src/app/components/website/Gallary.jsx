@@ -1,19 +1,27 @@
+
+"use client"
 import Image from 'next/image'; // Next.js optimized image component
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import http_request from '../../../../http-request';
+import { ReactLoader } from '../common/Loading';
 
 const Gallery = () => {
-  // Example Mehandi design images
-  const galleryImages = [
-    '/Logo.png',
-    '/Logo.png',
-    '/Logo.png',
-    '/Logo.png',
-    '/Logo.png',
-    '/Logo.png',
-  ];
+  
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const router = useRouter();
+  const [designs, setDesigns] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    fetchDesigns();
+  }, []);
   const handleImageClick = (image) => {
     setSelectedImage(image); // Set clicked image to show in modal
   };
@@ -21,7 +29,34 @@ const Gallery = () => {
   const closeModal = () => {
     setSelectedImage(null); // Close the modal
   };
+ 
 
+  const fetchDesigns = async () => {
+    try {
+      setLoading(true)
+      const response = await http_request.get("/getAllMehndiDesign");
+      const { data } = response;
+      setDesigns(data);
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+
+      console.error("Error fetching designs:", error);
+    }
+  };
+
+  const handleOrder = (item) => {
+    const orderData= { item, user };
+    if (user) {
+      localStorage.setItem("orderM", JSON.stringify(orderData));
+      router.push("/myOrders");
+    } else {
+      alert("Please Login");
+      router.push("/sign_in");
+    }
+  };
+  // console.log(designs);
+  
   return (
     <div className="container mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
@@ -29,23 +64,32 @@ const Gallery = () => {
       </h1>
 
       {/* Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {galleryImages.map((image, index) => (
-          <div key={index} className="relative group">
-            <Image
-              src={image}
-              alt={`Mehandi design ${index + 1}`}
-              width={500}
-              height={500}
-              className="w-full h-64 object-cover rounded-lg shadow-lg cursor-pointer"
-              onClick={() => handleImageClick(image)}
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-lg transition-opacity">
-              <p className="text-white text-lg">View Design</p>
-            </div>
+      {loading===true?<ReactLoader />
+      : <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {designs?.map((item, index) => (
+        <div
+          key={index}
+          className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg"
+          onClick={() => handleOrder(item)}
+        >
+          {/* Image Section */}
+          <Image
+            src={item?.image}
+            alt={`Mehandi design ${index + 1}`}
+            width={500}
+            height={500}
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          
+          {/* Overlay Section */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <p className="text-white text-lg font-semibold">View Design</p>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
+    
+}
 
       {/* Lightbox Modal for clicked image */}
       {selectedImage && (
