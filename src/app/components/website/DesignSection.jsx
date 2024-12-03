@@ -44,12 +44,30 @@ const DesignSection = () => {
     }
   };
 
+  const cards = [
+    {
+      title: 'Group Order',
+      description: 'Collaborate with your team to place orders efficiently.',
+      icon: '👥',
+      
+    },
+    {
+      title: 'Order',
+      description: 'Place single or bulk orders seamlessly.',
+      icon: '🛒',
+    },
+    {
+      title: 'Design',
+      description: 'Customize your order with unique designs.',
+      icon: '🎨',
+    },
+  ];
   return (
     <section id="services" className="mt-12">
-      <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 mb-4">
+      <h3 className="text-3xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 mb-4">
         Our Services
       </h3>
-      {loading===true? <ReactLoader />
+      {/* {loading===true? <ReactLoader />
      : <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {designs.map((item, index) => (
           <div
@@ -62,7 +80,24 @@ const DesignSection = () => {
           </div>
         ))}
       </div>
-}
+} */}
+  <div className="  w-full flex justify-center items-center  ">
+      <div className="w-full  grid gap-6 grid-cols-3 text-center">
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            className="bg-white cursor-pointer shadow-lg rounded-lg p-6 transition transform hover:scale-105 hover:shadow-xl"
+          >
+            <div className="text-4xl mb-4 text-blue-500">{card.icon}</div>
+            <h3 className="md:text-xl text-sm font-bold text-gray-800">{card.title}</h3>
+            {/* <p className="text-gray-600 mt-2">{card.description}</p> */}
+            {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+              Learn More
+            </button> */}
+          </div>
+        ))}
+      </div>
+    </div>
     </section>
   );
 };
