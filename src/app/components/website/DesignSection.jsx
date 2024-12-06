@@ -35,9 +35,13 @@ const DesignSection = () => {
 
   const handleOrder = (item) => {
     const orderData= { item, user };
+    console.log(item);
+    
     if (user) {
-      localStorage.setItem("orderM", JSON.stringify(orderData));
-      router.push("/myOrders");
+     
+        // localStorage.setItem("orderM", JSON.stringify(orderData));
+        router.push(item);
+      
     } else {
       alert("Please Login");
       router.push("/sign_in");
@@ -49,17 +53,22 @@ const DesignSection = () => {
       title: 'Group Order',
       description: 'Collaborate with your team to place orders efficiently.',
       icon: '👥',
+      link:"groupOrder"
       
     },
     {
       title: 'Order',
       description: 'Place single or bulk orders seamlessly.',
       icon: '🛒',
+      link:"myOrder"
+
     },
     {
       title: 'Design',
       description: 'Customize your order with unique designs.',
       icon: '🎨',
+      link:"userDesign"
+
     },
   ];
   return (
@@ -85,6 +94,7 @@ const DesignSection = () => {
       <div className="w-full  grid gap-6 grid-cols-3 text-center">
         {cards.map((card, index) => (
           <div
+          onClick={() => handleOrder(card?.link)}
             key={index}
             className="bg-white cursor-pointer shadow-lg rounded-lg p-6 transition transform hover:scale-105 hover:shadow-xl"
           >
