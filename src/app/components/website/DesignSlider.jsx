@@ -38,9 +38,15 @@ const MehndiDesignSlider = () => {
 
   const handleOrder = (item) => {
     const orderData = { item, user };
-    if (user) {
-      localStorage.setItem("orderM", JSON.stringify(orderData));
-      router.push("/myOrders");
+    if (user && designs) {
+      if(item?.groupOrder===true){
+        localStorage.setItem("orderM", JSON.stringify(orderData));
+        router.push("/groupOrder");
+      }else{
+        localStorage.setItem("orderM", JSON.stringify(orderData));
+        router.push("/myOrders");
+      }
+      
     } else {
       alert("Please Login");
       router.push("/sign_in");
@@ -77,7 +83,7 @@ const MehndiDesignSlider = () => {
 
           : <Slider {...settings}>
             {designs?.map((design, index) => (
-              <div key={index} className="md:p-4 p-0">
+              <div key={index} className="md:p-4 p-0 cursor-pointer" onClick={()=>handleOrder(design)}>
                 <div className="flex flex-col items-center bg-white rounded-lg shadow-lg md:p-6 p-2">
                   <img
                     src={design.image}

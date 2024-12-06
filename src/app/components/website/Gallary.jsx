@@ -48,8 +48,13 @@ const Gallery = () => {
   const handleOrder = (item) => {
     const orderData= { item, user };
     if (user) {
-      localStorage.setItem("orderM", JSON.stringify(orderData));
-      router.push("/myOrders");
+      if(item?.groupOrder===true){
+        localStorage.setItem("orderM", JSON.stringify(orderData));
+        router.push("/groupOrder");
+      }else{
+        localStorage.setItem("orderM", JSON.stringify(orderData));
+        router.push("/myOrders");
+      }
     } else {
       alert("Please Login");
       router.push("/sign_in");
@@ -60,7 +65,7 @@ const Gallery = () => {
   return (
     <div className="container mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        Mehandi Design Gallery
+        Mehandi Order Gallery
       </h1>
 
       {/* Gallery Grid */}
