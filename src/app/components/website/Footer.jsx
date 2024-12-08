@@ -75,7 +75,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-gray-600 pt-4 text-center">
+        <div className="mt-8 md:pb-0 pb-14 border-t border-gray-600 pt-4 text-center">
           <p className="text-sm text-gray-200">
             © {new Date().getFullYear()} SMehndi. All rights reserved.
           </p>
