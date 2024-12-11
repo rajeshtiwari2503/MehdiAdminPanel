@@ -44,79 +44,181 @@ const MyOrders = () => {
     }
   };
 
-  const userPayment = async (row) => {
-    try {
+//   const userPayment = async (row) => {
+//     try {
 
 
-      const amount = row?.item?.groupOrder === true ? 500 : +(row?.item?.price); // Convert amount to paise (INR)
-      const resDatapay = {
-        name: row?.user?.user?.name, customerId: row?.user?.user?._id, address: row?.user?.user?.address, email: row?.user?.user?.email, contact: row?.user?.user?.contact
-        , design: row?.item?.name, designId: row?.item?._id,
-        image: row?.item?.image, price: row?.item?.price, groupOrder: row?.item?.groupOrder, amount, currency: "INR"
-      };
-      // console.log(resDatapay);
+//       const amount = row?.item?.groupOrder === true ? 500 : +(row?.item?.price); // Convert amount to paise (INR)
+//       const resDatapay = {
+//         name: row?.user?.user?.name, customerId: row?.user?.user?._id, address: row?.user?.user?.address, email: row?.user?.user?.email, contact: row?.user?.user?.contact
+//         , design: row?.item?.name, designId: row?.item?._id,
+//         image: row?.item?.image, price: row?.item?.price, groupOrder: row?.item?.groupOrder, amount, currency: "INR"
+//       };
+//       console.log(resDatapay);
 
-      // Send the request to the backend to create the order
-      let response = await http_request.post("/addOrder", resDatapay);
-      let { data } = response;
-      // console.log(data); // Check if the backend returns the correct response
+//       // Send the request to the backend to create the order
+//       let response = await http_request.post("/addOrder", resDatapay);
+//       let { data } = response;
+//       // console.log(data); // Check if the backend returns the correct response
 
-      const options = {
-        key: "rzp_test_RZvXA4bkG4UQnJ", // Use your Razorpay Key ID from env variable
-        amount: amount, // Amount in paise
-        currency: "INR",
-        name: "SMEHNDI", // Your business name
-        description: "Payment for order",
-        image: "/Logo.png",
-        order_id: data.razorpayOrderId, // Use the razorpayOrderId from backend response
-        handler: async function (orderDetails) {
-          // console.log(orderDetails);
+//       const options = {
+//         key: "rzp_test_RZvXA4bkG4UQnJ", // Use your Razorpay Key ID from env variable
+//         amount: amount, // Amount in paise
+//         currency: "INR",
+//         name: "SMEHNDI", // Your business name
+//         description: "Payment for order",
+//         image: "/Logo.png",
+//         order_id: data.razorpayOrderId, // Use the razorpayOrderId from backend response
+//         handler: async function (orderDetails) {
+//           // console.log(orderDetails);
 
-          const refOrder = { razorpayPaymentId: orderDetails?.razorpay_payment_id, razorpayOrderId: orderDetails?.razorpay_order_id, razorpaySignature: orderDetails?.razorpay_signature }
-          try {
-            // Send payment details to backend for verification
-            let verifyResponse = await axios.post("https://mehdiappbackend.onrender.com/verify-payment", refOrder
-            );
+//           const refOrder = { razorpayPaymentId: orderDetails?.razorpay_payment_id, razorpayOrderId: orderDetails?.razorpay_order_id, razorpaySignature: orderDetails?.razorpay_signature }
+//           console.log(refOrder);
+         
+//           try {
+//             // Send payment details to backend for verification
+//             let verifyResponse = await axios.post("https://mehdiappbackend.onrender.com/verify-payment", refOrder
+//             );
 
-            let { data } = verifyResponse;
-            // console.log(data);
-            // console.log(verifyResponse);
+//             let { data } = verifyResponse;
+//             console.log(data);
+//             // console.log(verifyResponse);
 
-            if (data?.status === true) {
-              localStorage.removeItem("orderM")
-              ToastMessage(data);
-              setRefresh(data);
-              window.location.reload();
-              // onClose(true); // Close the modal or dialog
-            } else {
-              ToastMessage({ status: false, msg: "Payment verification failed." });
-            }
-          } catch (err) {
-            console.log("Payment verification error:", err);
+//             if (data?.status === true) {
+//               localStorage.removeItem("orderM")
+//               ToastMessage(data);
+//               setRefresh(data);
+//               window.location.reload();
+//               // onClose(true); // Close the modal or dialog
+//             } else {
+//               ToastMessage({ status: false, msg: "Payment verification failed." });
+//             }
+//           } catch (err) {
+//             console.log("Payment verification error:", err);
+//             ToastMessage({ status: false, msg: "Payment verification failed." });
+//           }
+//         },
+//         prefill: {
+//           name: row?.user?.user?.name, // Customer's name
+//           email: row?.user?.user?.email,
+//           contact: row?.user?.user?.contact,
+//         },
+//         notes: {
+//           address: "Razorpay Corporate Office",
+//         },
+//         theme: {
+//           color: "#3399cc",
+//         },
+//       };
+// // console.log(options);
+
+//       // Open Razorpay checkout
+//       const rzp1 = new window.Razorpay(options);
+//       rzp1.open();
+//     } catch (err) {
+//       console.log("Payment order creation error:", err);
+//       ToastMessage({ status: false, msg: "An error occurred while creating the payment order."});
+//     }
+//   };
+const loadRazorpaySDK = () => {
+  return new Promise((resolve, reject) => {
+    if (typeof window.Razorpay !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject('Failed to load Razorpay SDK');
+    document.body.appendChild(script);
+  });
+};
+
+const userPayment = async (row) => {
+  try {
+    // Ensure Razorpay SDK is loaded
+    await loadRazorpaySDK();
+
+    const amount = row?.item?.groupOrder === true ? 500 : +(row?.item?.price); // Convert amount to paise (INR)
+    const resDatapay = {
+      name: row?.user?.user?.name,
+      customerId: row?.user?.user?._id,
+      address: row?.user?.user?.address,
+      email: row?.user?.user?.email,
+      contact: row?.user?.user?.contact,
+      design: row?.item?.name,
+      designId: row?.item?._id,
+      image: row?.item?.image,
+      price: row?.item?.price,
+      groupOrder: row?.item?.groupOrder,
+      amount,
+      currency: "INR",
+    };
+
+    // Send the request to the backend to create the order
+    let response = await http_request.post("/addOrder", resDatapay);
+    let { data } = response;
+
+    const options = {
+      key: "rzp_test_RZvXA4bkG4UQnJ", // Use your Razorpay Key ID
+      amount: amount, // Amount in paise
+      currency: "INR",
+      name: "SMEHNDI",
+      description: "Payment for order",
+      image: "/Logo.png",
+      order_id: data.razorpayOrderId,
+      handler: async function (orderDetails) {
+        const refOrder = {
+          razorpayPaymentId: orderDetails?.razorpay_payment_id,
+          razorpayOrderId: orderDetails?.razorpay_order_id,
+          razorpaySignature: orderDetails?.razorpay_signature,
+        };
+
+        try {
+          let verifyResponse = await axios.post("https://mehdiappbackend.onrender.com/verify-payment", refOrder);
+          let { data } = verifyResponse;
+
+          if (data?.status === true) {
+            localStorage.removeItem("orderM");
+            ToastMessage(data);
+            setRefresh(data);
+            window.location.reload();
+          } else {
             ToastMessage({ status: false, msg: "Payment verification failed." });
           }
-        },
-        prefill: {
-          name: row?.user?.user?.name, // Customer's name
-          email: row?.user?.user?.email,
-          contact: row?.user?.user?.contact,
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#3399cc",
-        },
-      };
+        } catch (err) {
+          console.log("Payment verification error:", err);
+          ToastMessage({ status: false, msg: "Payment verification failed." });
+        }
+      },
+      prefill: {
+        name: row?.user?.user?.name,
+        email: row?.user?.user?.email,
+        contact: row?.user?.user?.contact,
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
 
-      // Open Razorpay checkout
-      const rzp1 = new window.Razorpay(options);
-      rzp1.open();
-    } catch (err) {
-      console.log("Payment order creation error:", err);
-      ToastMessage({ status: false, msg: "An error occurred while creating the payment order."});
-    }
-  };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  } catch (err) {
+    console.error("Payment process error:", err);
+    ToastMessage({
+      status: false,
+      msg: err === "Failed to load Razorpay SDK" 
+        ? "Razorpay SDK not loaded. Please refresh the page and try again." 
+        : "An error occurred while processing the payment.",
+    });
+  }
+};
+
 
   return (
     <>
