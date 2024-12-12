@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import http_request from '../../../http-request';
 import Layout from "../components/website/HeaderLayout";
 import Footer from "../components/website/Footer";
+import { useRouter } from "next/navigation";
 
 const GroupOrder = () => {
     const [designs, setDesigns] = useState([]);
@@ -14,11 +15,14 @@ const GroupOrder = () => {
     const [openTitle, setOpenTitle] = useState(false);
     const [selectedDesign, setSelectedDesign] = useState(null);
     const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
+  const router =useRouter();
     const {
         control,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -33,6 +37,11 @@ const GroupOrder = () => {
     });
 
     useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        
+        }
         const fetchDesigns = async () => {
             try {
                 setLoading(true);
@@ -61,6 +70,8 @@ const GroupOrder = () => {
         reset();
     };
     const handleClick = (design) => {
+        setValue("contact",user?.user?.contact)
+        setValue("address",user?.user?.address)
         setSelectedDesign(design);
         setOpenTitle(true)
         // console.log(design);
@@ -68,10 +79,16 @@ const GroupOrder = () => {
     }
     const onSubmit = async (data) => {
         try {
-            setLoading(true);
-            const orderData = { ...data, designId: selectedDesign?._id || "" };
-            await http_request.post("/addOrder", orderData); // Update API route
-            alert("Order Confirmed: Your order has been placed successfully.");
+       
+            const orderData={item:{...data,...selectedDesign}, user}
+             
+            
+            // setLoading(true);
+            // const orderData = { ...data, designId: selectedDesign?._id || "" };
+            // await http_request.post("/addOrder", orderData); // Update API route
+            // alert("Order Confirmed: Your order has been placed successfully.");
+            localStorage.setItem("orderM", JSON.stringify(orderData));
+            router.push("/myOrders");
             closeModal();
         } catch (error) {
             console.error("Error placing order:", error);
@@ -79,7 +96,10 @@ const GroupOrder = () => {
         } finally {
             setLoading(false);
         }
+       
     };
+   
+     
     const items = [
         { name: 'Simple Bunch', price: '150 Rs.' },
         { name: 'Heavy Mandala', price: '200-250 Rs.' },
@@ -317,6 +337,7 @@ const GroupOrder = () => {
                                 <div className="flex justify-between">
                                     <button
                                         type="submit"
+                                        // onClick={()=>handleOrder()}
                                         className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"
                                     >
                                         Place Order

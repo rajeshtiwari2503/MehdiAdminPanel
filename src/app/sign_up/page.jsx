@@ -42,10 +42,18 @@ const SignUp = () => {
       setLoading(true)
       let response = await http_request.post(`/${regApi}`, reqdata)
       const { data } = response
-      localStorage.setItem('userInfo', JSON.stringify(reqdata));
-      ToastMessage(data)
-      setLoading(false)
-      router.push("/sign_in")
+      
+      if(data?.status===true){
+        console.log(data);
+        
+        localStorage.setItem('user', JSON.stringify(data));
+        ToastMessage(data)
+        setLoading(false)
+        router.push("/")
+        // window.location.reload();
+        
+      }
+     
     }
     catch (err) {
       setLoading(false)
