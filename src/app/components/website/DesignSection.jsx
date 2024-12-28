@@ -57,10 +57,10 @@ const DesignSection = () => {
       
     },
     {
-      title: 'Order',
+      title: 'Order Online',
       description: 'Place single or bulk orders seamlessly.',
       icon: '🛒',
-      link:"myOrder"
+      link:"designs"
 
     },
     {

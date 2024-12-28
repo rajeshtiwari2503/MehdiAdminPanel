@@ -48,7 +48,7 @@
 //         {/* Services Section */}
 //         <DesignSection />
 
-      
+
 
 
 //         {/* Gallery Section */}
@@ -81,6 +81,7 @@ import Layout from "./HeaderLayout";
 import TestimonialSlider from "./Testomonials";
 import DesignSection from "./DesignSection";
 import MehndiDesignSlider from "./DesignSlider";
+import { Search } from "@mui/icons-material";
 
 
 
@@ -107,11 +108,11 @@ const LandingPage = () => {
   return (
     <>
       <Layout />
-      <main className="bg-white px-3 md:px-10 ms:px-4">
+      <main className="bg-white ">
         {/* Welcome Section */}
-        <section className="text-center">
+        <section className="text-center bg-[#58110f] px-3 md:px-10 ms:px-4">
           <motion.h1
-            className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4"
+            className="text-4xl pt-8 font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4"
             initial="hidden"
             animate="visible"
             variants={RightToLeft}
@@ -126,7 +127,7 @@ const LandingPage = () => {
             variants={LeftToRight}
           >
             {/* S Mehndi है जहाँ खुशियाँ हैं वहाँ */}
-            S Mehndi is where happiness resides.
+            S Mehndi is where there is happiness.
           </motion.h3>
 
           <motion.p
@@ -137,6 +138,21 @@ const LandingPage = () => {
           >
             Explore our beautiful, traditional, and modern Mehandi designs for all occasions.
           </motion.p>
+          <div className="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-yellow-500 to-amber-700 rounded-md shadow-md mb-10">
+            <motion.p
+              className="text-2xl text-white font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4"
+              initial="hidden"
+              animate="visible"
+              variants={BounceEffect}
+            >
+              Home Service Available
+            </motion.p>
+            <p className="text-white  text-center ">
+              Enjoy the comfort of professional stylists and traditional mehndi artists delivered straight to your home for all occasions.
+            </p>
+
+          </div>
+
 
           {/* Slider Animation */}
           <motion.div
@@ -168,13 +184,31 @@ const LandingPage = () => {
           </motion.section>
 
           <motion.div
-            className="inline-flex cursor-pointer px-6 py-3 rounded text-amber-700 bg-white border border-amber-700 
+            className="inline-flex cursor-pointer px-11 py-3 mb-7 rounded-md text-amber-700 bg-gradient-to-r   from-red-700   via-yellow-600 to-yellow-400 border border-amber-700 
             hover:bg-gradient-to-r hover:from-amber-700 hover:to-yellow-500 hover:text-white transition-transform hover:scale-110 animate-bounce"
             initial="hidden"
             animate="visible"
-            // variants={BounceEffect}
+          // variants={BounceEffect}
           >
-            Explore Services
+            <div className="container mx-auto flex items-center justify-center px-2 py-3">
+              <div className="w-full max-w-md">
+                <div className="relative">
+                  {/* Input Field */}
+                  <input
+                    type="text"
+                    placeholder="Order and Group Order and Design"
+                    className="w-full p-3 pl-14 text-sm md:text-base text-red-500 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+
+                  {/* Larger Search Icon */}
+                  <Search
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    style={{ fontSize: "2rem" }}
+                  />
+                </div>
+              </div>
+            </div>
+
           </motion.div>
         </section>
 
@@ -220,4 +254,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
- 
+

@@ -117,7 +117,7 @@ const GroupOrder = () => {
         <>
             <Layout />
 
-            <div className="  bg-white px-10  ">
+            <div className="  bg-white px-10 pt-8 ">
                 <h1 className="text-2xl font-bold text-center mb-6">Group Order</h1>
                 {loading ? (
                     <div className="flex justify-center items-center">
