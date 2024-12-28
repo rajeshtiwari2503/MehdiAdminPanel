@@ -73,42 +73,40 @@ const DesignSection = () => {
   ];
   return (
     <section id="services" className="mt-12">
-      <h3 className="text-3xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 mb-4">
-        Our Services
-      </h3>
-      {/* {loading===true? <ReactLoader />
-     : <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {designs.map((item, index) => (
-          <div
-            key={index}
-            onClick={() => handleOrder(item)}
-            className="p-4 bg-white cursor-pointer shadow-md rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
-          >
-            <h4 className="text-2xl font-bold mb-2">{item.name}</h4>
-            <p>{item.price}</p>
-          </div>
-        ))}
-      </div>
-} */}
-  <div className="  w-full flex justify-center items-center  ">
-      <div className="w-full  grid gap-6 grid-cols-3 text-center">
-        {cards.map((card, index) => (
-          <div
+  <h3 className="text-3xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 mb-8">
+    Our Services
+  </h3>
+
+  <div className="container mx-auto px-4">
+    {/* Responsive Grid Layout */}
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {cards.map((card, index) => (
+        <div
+          key={index}
           onClick={() => handleOrder(card?.link)}
-            key={index}
-            className="bg-white cursor-pointer shadow-lg rounded-lg p-6 transition transform hover:scale-105 hover:shadow-xl"
-          >
-            <div className="text-4xl mb-4 text-blue-500">{card.icon}</div>
-            <h3 className="md:text-xl text-sm font-bold text-gray-800">{card.title}</h3>
-            {/* <p className="text-gray-600 mt-2">{card.description}</p> */}
-            {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-              Learn More
-            </button> */}
+          className="bg-white cursor-pointer shadow-lg rounded-lg p-6 transition transform hover:scale-105 hover:shadow-xl hover:bg-gray-50"
+        >
+          {/* Icon */}
+          <div className="text-4xl mb-4 text-blue-500">
+            {card.icon}
           </div>
-        ))}
-      </div>
+
+          {/* Title */}
+          <h3 className="md:text-xl text-sm font-bold text-gray-800">{card.title}</h3>
+
+          {/* Description (if needed) */}
+          {/* <p className="text-gray-600 mt-2">{card.description}</p> */}
+          
+          {/* Optional button */}
+          {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            Learn More
+          </button> */}
+        </div>
+      ))}
     </div>
-    </section>
+  </div>
+</section>
+
   );
 };
 
