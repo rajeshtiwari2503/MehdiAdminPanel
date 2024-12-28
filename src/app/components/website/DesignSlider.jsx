@@ -7,8 +7,6 @@ import http_request from '../../../../http-request';
 import { ReactLoader } from '../common/Loading';
 
 const MehndiDesignSlider = () => {
-
-
   const router = useRouter();
   const [designs, setDesigns] = useState([]);
   const [user, setUser] = useState(null);
@@ -24,14 +22,13 @@ const MehndiDesignSlider = () => {
 
   const fetchDesigns = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await http_request.get("/getAllMehndiDesign");
       const { data } = response;
       setDesigns(data);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      setLoading(false)
-
+      setLoading(false);
       console.error("Error fetching designs:", error);
     }
   };
@@ -39,69 +36,74 @@ const MehndiDesignSlider = () => {
   const handleOrder = (item) => {
     const orderData = { item, user };
     if (user && designs) {
-      if(item?.groupOrder===true){
+      if (item?.groupOrder === true) {
         localStorage.setItem("orderM", JSON.stringify(orderData));
         router.push("/groupOrder");
-      }else{
+      } else {
         localStorage.setItem("orderM", JSON.stringify(orderData));
         router.push("/myOrders");
       }
-      
     } else {
       alert("Please Login");
       router.push("/sign_in");
     }
   };
 
-
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 3, // Show 3 slides by default (for larger screens)
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
     responsive: [
       {
-        breakpoint: 768,
+        breakpoint: 1024, // For tablets
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2, // Show 2 slides on tablets
+        },
+      },
+      {
+        breakpoint: 768, // For mobile screens
+        settings: {
+          slidesToShow: 3, // Show 3 slides on mobile devices
+          slidesToScroll: 3, // Scroll 3 slides at a time on mobile
         },
       },
     ],
   };
+  
 
   return (
-    <div className=" pb-5 container md:mx-auto md:px-10">
-      {/* <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        Our Mehndi Designs
-      </h1> */}
-      <>
-        {loading === true ? <ReactLoader />
-
-
-          : <Slider {...settings}>
-            {designs?.map((design, index) => (
-              <div key={index} className="md:p-4 p-0 cursor-pointer" onClick={()=>handleOrder(design)}>
-                <div className="flex flex-col items-center bg-white rounded-lg shadow-lg md:p-6 p-2">
-                  <img
-                    src={design.image}
-                    alt={design.title}
-                    className="w-full md:h-32 h-20 object-cover rounded-lg mb-4"
-                  />
-                  <h2 className="mt-2 md:text-lg text-sm font-bold">{design.name}</h2>
-                  {/* <p className="text-gray-600 text-sm mt-2 text-center">
-                {design.description}
-              </p> */}
-                </div>
-              </div>
-            ))}
-          </Slider>
-        }
-         </>
-      </div>
-      );
+    <div className="container mx-auto px-4 pb-3">
+      {loading ? (
+        <ReactLoader />
+      ) : (
+        <Slider {...settings}>
+          {designs?.map((design, index) => (
+           <div key={index} className="p-2 cursor-pointer" onClick={() => handleOrder(design)}>
+           <div className="flex flex-col items-center bg-white rounded-lg shadow-lg p-1">
+             {/* Image Section */}
+             <div className="relative w-full h-20 md:h-48">
+               <img
+                 src={design.image}
+                 alt={design.title}
+                 className="w-full h-full object-cover rounded-lg mb-3"
+               />
+               {/* Design Name in the Center */}
+               <h2 className="absolute inset-0 flex items-center justify-center text-yellow-400 md:text-lg text-sm font-bold hover:bg-black/50 bg-opacity-50 rounded-lg">
+                 {design.name}
+               </h2>
+             </div>
+           </div>
+         </div>
+         
+          ))}
+        </Slider>
+      )}
+    </div>
+  );
 };
 
-      export default MehndiDesignSlider;
+export default MehndiDesignSlider;
