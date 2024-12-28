@@ -138,6 +138,15 @@ const LandingPage = () => {
           >
             Explore our beautiful, traditional, and modern Mehandi designs for all occasions.
           </motion.p>
+           {/* Slider Animation */}
+           <motion.div
+            className="transition-transform hover:scale-110"
+            initial="hidden"
+            animate="visible"
+            variants={BounceEffect}
+          >
+            <MehndiDesignSlider />
+          </motion.div>
           <div className="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-yellow-500 to-amber-700 rounded-md shadow-md mb-10">
             <motion.p
               className="text-2xl text-white font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-500 mb-4"
@@ -154,15 +163,7 @@ const LandingPage = () => {
           </div>
 
 
-          {/* Slider Animation */}
-          <motion.div
-            className="transition-transform hover:scale-110"
-            initial="hidden"
-            animate="visible"
-            variants={BounceEffect}
-          >
-            <MehndiDesignSlider />
-          </motion.div>
+         
 
           {/* Call-to-Action */}
           <motion.section
