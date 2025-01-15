@@ -49,7 +49,7 @@ export default function UserProfile() {
     try {
       await localStorage.removeItem('user');
 
-      router.push("/sign-in"); // Navigate to login page after logout
+      router.push("/"); // Navigate to login page after logout
     } catch (error) {
       console.log('Error clearing user data', error);
     }
@@ -103,10 +103,10 @@ export default function UserProfile() {
               {/* User Details */}
               <div className="mt-10 md:ml-10 md:mt-0 space-y-2 md:text-right">
                 {[
-                  { icon: 'Phone', text: `Phone ' :${user?.contact }`},
-                  { icon: 'Phone', text: `Verified' :${user?.verification }`},
-                  { icon: 'Phone', text: `Location' :${user?.address }`},
-                  { icon: 'Phone', text: `Status' :${user?.status }`},
+                  { icon: 'Phone', text: `Phone  :${user?.contact }`},
+                  { icon: 'Phone', text: `Verified :${user?.verification }`},
+                  { icon: 'Phone', text: `Location :${user?.address }`},
+                  { icon: 'Phone', text: `Status :${user?.status }`},
                   // { icon: 'Verified', text: user?.verification },
                   // { icon: 'Location', text: user?.address },
                   // { icon: 'Status', text: user?.status },

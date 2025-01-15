@@ -226,99 +226,122 @@ const MyOrders = () => {
       <Layout />
       <Toaster />
       <div className="p-6">
-        <h2 className="text-2xl font-bold mb-4">My Orders</h2>
-        {loading === true ? <ReactLoader /> : (
-          <div>
-            {user && (
-              <div className="mb-4 p-4 bg-gray-100 rounded-lg">
-                <h3 className="text-lg font-semibold">User Details</h3>
-                <p>Name: {user?.user?.name}</p>
-                <p>Email: {user?.user?.email}</p>
-                <p>Contact: {user?.user?.contact}</p>
-                <p>Address: {user?.user?.address}</p>
-              </div>
-            )}
+  <h2 className="text-2xl font-bold mb-4">My Orders</h2>
+  {loading === true ? (
+    <ReactLoader />
+  ) : (
+    <div>
+      {/* User Details Section */}
+      {user && (
+        <div className="mb-4 p-6 bg-gray-50 shadow-sm rounded-lg">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">User Details</h3>
+          <p className="text-gray-600">Name: {user?.user?.name}</p>
+          <p className="text-gray-600">Email: {user?.user?.email}</p>
+          <p className="text-gray-600">Contact: {user?.user?.contact}</p>
+          <p className="text-gray-600">Address: {user?.user?.address}</p>
+        </div>
+      )}
 
-            {order ? (
-              <div className="p-4 bg-white shadow-md rounded-lg mb-6 flex flex-row justify-between items-center ">
+      {/* Order Section */}
+      {order ? (
+        <div className="p-6 bg-white shadow-md rounded-lg flex flex-col md:flex-row justify-between items-center mb-6">
+          {/* Left Content Section */}
+          <div className="md:w-1/2">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Order Details</h3>
+            <p className="text-gray-700">Design: {order?.item?.name}</p>
+            <p className="text-gray-700">
+              Original Price: 
+              <span className="line-through text-gray-500 ml-1">${order?.item?.price}</span>
+            </p>
+            <p className="text-gray-700">
+              Discounted Price: 
+              <span className="text-green-600 ml-1">
+                ${((order?.item?.price * 0.75) || 0).toFixed(2)}
+              </span>
+            </p>
+            <p className="text-gray-700">
+              Group Order: {order?.item?.groupOrder === true ? "YES" : "NO"}
+            </p>
+            {!isOrderCreated ? (
+              <button
+                onClick={() => userPayment(order)}
+                disabled={loading}
+                className={`mt-4 px-6 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition duration-300 ${
+                  loading ? "cursor-not-allowed opacity-50" : ""
+                }`}
+              >
+                {loading ? "Creating Order..." : "Create Order"}
+              </button>
+            ) : (
+              <p className="text-green-600 mt-4">Order successfully created!</p>
+            )}
+          </div>
+          {/* Right Image Section */}
+          <div className="md:w-1/2 flex justify-center md:justify-end">
+            <img
+              src={order?.item?.image}
+              alt={order?.item?.design}
+              className="w-40 md:w-60 h-40 md:h-60 object-cover rounded shadow-lg"
+            />
+          </div>
+        </div>
+      ) : (
+        <p>No order details available.</p>
+      )}
+
+      {/* My Orders Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {myOrder.length > 0 ? (
+          myOrder.map((item, index) => (
+            <Link
+              key={index}
+              href={`/myOrders/details/${item._id}`}
+              passHref
+              className="block bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300"
+            >
+              <div className="flex flex-col md:flex-row justify-between items-center">
                 {/* Left Content Section */}
-                <div className="md:w-1/2 mb-4 md:mb-0 me-4">
-                  <h3 className="text-xl font-semibold mb-2">Order Details</h3>
-                  <p>Design: {order?.item?.name}</p>
-                  <p>Price: {order?.item?.price}</p>
-                  <p>Group Order: {order?.item?.groupOrder === true ? "YES" : "NO"}</p>
-                  {!isOrderCreated ? (
-                    <button
-                      onClick={() => userPayment(order)}
-                      disabled={loading}
-                      className={`mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${loading ? "cursor-not-allowed opacity-50" : ""
-                        }`}
-                    >
-                      {loading ? "Creating Order..." : "Create Order"}
-                    </button>
-                  ) : (
-                    <p className="text-green-500 mt-4">Order successfully created!</p>
-                  )}
+                <div className="md:w-1/2">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Order Details</h3>
+                  <p className="text-gray-600">Design: {item.design}</p>
+                  <p className="text-gray-600">
+                    Original Price: 
+                    <span className="line-through text-gray-500 ml-1">${item.price}</span>
+                  </p>
+                  <p className="text-gray-600">
+                    Discounted Price: 
+                    <span className="text-green-600 ml-1">
+                      ${(item.price * 0.75).toFixed(2)}
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Group Order: {item.groupOrder === true ? "YES" : "NO"}
+                  </p>
                 </div>
                 {/* Right Image Section */}
-                <div className="md:w-1/2 md:pl-6">
+                <div className="md:w-1/2 flex justify-center md:justify-end">
                   <img
-                    src={order?.item?.image} // Assuming `image` is the property name in the API response
-                    alt={order?.item?.design}
-                    className="w-32 md:w-full  md:h-48 object-cover rounded"
+                    src={item.image}
+                    alt={item.design}
+                    className="w-40 h-40 object-cover rounded shadow-md"
                   />
                 </div>
               </div>
-            ) : (
-              <p> </p>
-            )}
-
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {myOrder.length > 0 ? (
-                myOrder.map((item, index) => (
-                  <Link
-                  href={`/myOrders/details/${item._id}`} // Assuming you have a route like `/order-details/[orderId]`
-                  passHref
-                  className='p-4 bg-white shadow-md rounded-lg mb-6'
-                >
-                  <div key={index} className=" flex   flex-row justify-between items-center">
-                    {/* Left Content Section */}
-                   
-                    <div className="md:w-1/2 mb-4 md:mb-0">
-                      <h3 className="text-xl font-semibold mb-2">Order Details</h3>
-                      <p>Design: {item.design}</p> {/* Ensure these fields match your API response structure */}
-                      <p>Price: {item.price}</p>
-                      <p>Group Order: {item.groupOrder === true ? "YES" : "NO"}</p>
-                    </div>
-                    {/* Right Image Section */}
-                    <div className="md:w-1/2 md:pl-6">
-                      <img
-                        src={item.image} // Assuming `image` is the property name in the API response
-                        alt={item.design}
-                        className="w-32 md:w-full h-32  object-cover rounded"
-                      />
-                    </div>
-                    
-                     
-                  
-                  </div>
-                  <div className='text-center mt-4'>
-                  <button className=" p-2 text-center bg-blue-500 text-white rounded hover:bg-blue-600">
-                        View Details
-                      </button>
-                      </div>
-                  </Link>
-                ))
-              ) : (
-                <p>No orders found.</p>
-              )}
-            </div>
-
-
-          </div>
+              <div className="text-center mt-4">
+                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">
+                  View Details
+                </button>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p className="text-gray-500">No orders found.</p>
         )}
       </div>
+    </div>
+  )}
+</div>
+
       <Footer />
     </>
   );
