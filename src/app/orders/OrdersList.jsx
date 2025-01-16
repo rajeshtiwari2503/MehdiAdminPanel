@@ -31,8 +31,13 @@ import { ConfirmBox } from "@/app/components/common/ConfirmBox";
 import { ToastMessage } from "@/app/components/common/Toastify";
 import { ReactLoader } from "../components/common/Loading";
 import http_request from "../../../http-request";
+import { Visibility } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+ 
 
 const OrdersList = (props) => {
+
+  const router=useRouter()
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmBoxView, setConfirmBoxView] = useState(false);
   const [orderId, setOrderId] = useState("");
@@ -58,7 +63,8 @@ const OrdersList = (props) => {
     const fetchArtists = async () => {
       try {
         const response = await http_request.get("/getAllArtists");
-        setArtistList(response.data);
+        const {data}=response
+        setArtistList(data);
       } catch (error) {
         console.error("Failed to fetch artists:", error);
       }
@@ -143,6 +149,9 @@ const OrdersList = (props) => {
       console.error("Error updating order:", error);
     }
   };
+  const handleDetails=(id)=>{
+    router.push(`/orders/${id}`)
+  }
 
   return (
     <div>
@@ -192,12 +201,18 @@ const OrdersList = (props) => {
                       {new Date(row.createdAt)?.toLocaleString()}
                     </TableCell>
                     <TableCell>{row.status}</TableCell>
-                    <TableCell>
+                    <TableCell style={{display:"flex"}}>
                       <IconButton
                         aria-label="edit"
                         onClick={() => handleEdit(row)}
                       >
                         <EditIcon color="success" />
+                      </IconButton>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleDetails(row?._id)}
+                      >
+                        <Visibility color="primary" />
                       </IconButton>
                       <IconButton
                         aria-label="delete"
