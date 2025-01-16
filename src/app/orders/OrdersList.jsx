@@ -1,43 +1,81 @@
-"use client"
-import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Modal, TextField, TablePagination, TableSortLabel, IconButton, Dialog, DialogContent, DialogActions, DialogTitle } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CloseIcon from '@mui/icons-material/Close';
-import { Add, Visibility } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
-import { ConfirmBox } from '@/app/components/common/ConfirmBox';
-import http_request from '../../../http-request'
-import { Toaster } from 'react-hot-toast';
-import { ToastMessage } from '@/app/components/common/Toastify';
-
-import { ReactLoader } from '../components/common/Loading';
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Modal,
+  TextField,
+  TablePagination,
+  TableSortLabel,
+  IconButton,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
+import { Toaster } from "react-hot-toast";
+import { ConfirmBox } from "@/app/components/common/ConfirmBox";
+import { ToastMessage } from "@/app/components/common/Toastify";
+import { ReactLoader } from "../components/common/Loading";
+import http_request from "../../../http-request";
+import { Visibility } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
  
 
 const OrdersList = (props) => {
 
-  const router = useRouter()
-
-  const categories = props?.categories;
+  const router=useRouter()
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmBoxView, setConfirmBoxView] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [editData, setEditData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDirection, setSortDirection] = useState('asc');
-  const [sortBy, setSortBy] = useState('id');
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortBy, setSortBy] = useState("id");
+  const [userData, setUserData] = useState(null);
+  const [artistList, setArtistList] = useState([]);
+  const [selectedArtist, setSelectedArtist] = useState("");
+  const [orderStatus, setOrderStatus] = useState("");
 
-  const [userData, setUserData] = React.useState(null);
-
-  React.useEffect(() => {
+  useEffect(() => {
     const storedValue = localStorage.getItem("user");
     if (storedValue) {
       setUserData(JSON.parse(storedValue));
     }
   }, []);
 
-  const filterData = props?.data?.filter((item) => item?.userId === userData?.user?._id)
+  useEffect(() => {
+    // Fetch artist list from API
+    const fetchArtists = async () => {
+      try {
+        const response = await http_request.get("/getAllArtists");
+        const {data}=response
+        setArtistList(data);
+      } catch (error) {
+        console.error("Failed to fetch artists:", error);
+      }
+    };
+    fetchArtists();
+  }, []);
+// console.log(artistList);
+
+  const filterData = props?.data?.filter(
+    (item) => item?.userId === userData?.user?._id
+  );
   const data = userData?.user?.role === "ADMIN" ? props?.data : filterData;
 
   const handleChangePage = (event, newPage) => {
@@ -50,94 +88,136 @@ const OrdersList = (props) => {
   };
 
   const handleSort = (property) => {
-    const isAsc = sortBy === property && sortDirection === 'asc';
-    setSortDirection(isAsc ? 'desc' : 'asc');
+    const isAsc = sortBy === property && sortDirection === "asc";
+    setSortDirection(isAsc ? "desc" : "asc");
     setSortBy(property);
   };
 
-  const sortedData = stableSort(data, getComparator(sortDirection, sortBy))?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const sortedData = stableSort(
+    data,
+    getComparator(sortDirection, sortBy)
+  )?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const handleEditModalClose = () => {
     setEditModalOpen(false);
+    setEditData(null);
   };
 
-  const handleAdd = (row) => {
-    setEditData(row)
+  const handleEdit = (row) => {
+    setEditData(row);
+    setSelectedArtist(row?.assignedArtist || "");
+    setOrderStatus(row?.status || "");
     setEditModalOpen(true);
-  }
+  };
 
   const deleteData = async () => {
     try {
-      let response = await http_request.deleteData(`/deleteOrder/${orderId}`);
-      let { data } = response;
+      const response = await http_request.deleteData(`/deleteOrder/${orderId}`);
+      const { data } = response;
       setConfirmBoxView(false);
-      props?.RefreshData(data)
+      props?.RefreshData(data);
       ToastMessage(data);
     } catch (err) {
       console.log(err);
     }
-  }
-  
+  };
+
   const handleDelete = (id) => {
-    setOrderId(id)
+    setOrderId(id);
     setConfirmBoxView(true);
+  };
+
+  const handleSave = async () => {
+    
+    const filterArtist=artistList?.find((f)=>f?._id===selectedArtist)
+    
+    try {
+      const updatedOrder = {
+        agentId:filterArtist?._id, agentName:filterArtist?.name, agentContact:filterArtist?.contact
+      };
+      console.log(updatedOrder);
+      
+      const response = await http_request.patch(
+        `/asignArtistInOrder/${editData._id}`,
+        updatedOrder
+      );
+      const { data } = response;
+      props?.RefreshData(data);
+      ToastMessage(data);
+      handleEditModalClose();
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
+  };
+  const handleDetails=(id)=>{
+    router.push(`/orders/${id}`)
   }
 
   return (
     <div>
       <Toaster />
-      <div className='flex justify-between items-center mb-3'>
-        <div className='font-bold text-2xl'>Orders List</div>
-        {/* <div onClick={handleAdd} className='flex bg-[#0284c7] hover:bg-[#5396b9] hover:text-black rounded-md p-2 cursor-pointer text-white justify-between items-center '>
-          <Add style={{ color: "white" }} />
-          <div className=' ml-2 '>Add Order</div>
-        </div> */}
+      <div className="flex justify-between items-center mb-3">
+        <div className="font-bold text-2xl">Orders List</div>
       </div>
-      {!data.length > 0 ? <div className='h-[400px] flex justify-center items-center'> <ReactLoader /></div>
-        :
+      {!data.length > 0 ? (
+        <div className="h-[400px] flex justify-center items-center">
+          <ReactLoader />
+        </div>
+      ) : (
         <>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <TableSortLabel active={sortBy === 'orderId'} direction={sortDirection} onClick={() => handleSort('orderId')}>
+                    <TableSortLabel
+                      active={sortBy === "orderId"}
+                      direction={sortDirection}
+                      onClick={() => handleSort("orderId")}
+                    >
                       Sr. No.
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>
-                    <TableSortLabel active={sortBy === 'productName'} direction={sortDirection} onClick={() => handleSort('productName')}>
-                      Design Name
-                    </TableSortLabel>
-                  </TableCell>
+                  <TableCell>Design Name</TableCell>
                   <TableCell>Customer Name</TableCell>
-                  <TableCell>Contact </TableCell>
-                  <TableCell>Address </TableCell>
-                  <TableCell>Email </TableCell>
+                  <TableCell>Contact</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>Email</TableCell>
                   <TableCell>Order Date</TableCell>
                   <TableCell>Order Status</TableCell>
-                  <TableCell>Status</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {sortedData.map((row, index) => (
                   <TableRow key={index} hover>
-                    <TableCell>{row?.i}</TableCell>
+                    <TableCell>{index + 1}</TableCell>
                     <TableCell>{row.design}</TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.contact}</TableCell>
                     <TableCell>{row.address}</TableCell>
                     <TableCell>{row.email}</TableCell>
-                    <TableCell>{new Date(row.createdAt)?.toLocaleString()}</TableCell>
-                    <TableCell>{row.order}</TableCell>
-                    <TableCell>{row.status}</TableCell>
                     <TableCell>
-                      <IconButton aria-label="edit" onClick={() => handleAdd(row)}>
+                      {new Date(row.createdAt)?.toLocaleString()}
+                    </TableCell>
+                    <TableCell>{row.status}</TableCell>
+                    <TableCell style={{display:"flex"}}>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleEdit(row)}
+                      >
                         <EditIcon color="success" />
                       </IconButton>
-                      <IconButton aria-label="delete" onClick={() => handleDelete(row.orderId)}>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleDetails(row?._id)}
+                      >
+                        <Visibility color="primary" />
+                      </IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDelete(row.orderId)}
+                      >
                         <DeleteIcon color="error" />
                       </IconButton>
                     </TableCell>
@@ -156,15 +236,16 @@ const OrdersList = (props) => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </>}
-      
+        </>
+      )}
+
       <Dialog open={editModalOpen} onClose={handleEditModalClose}>
-        <DialogTitle>{editData?._id ? "Edit Order" : "Add Order"}</DialogTitle>
+        <DialogTitle>Asign Artist</DialogTitle>
         <IconButton
           aria-label="close"
           onClick={handleEditModalClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
@@ -172,12 +253,50 @@ const OrdersList = (props) => {
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent>
-          {/* <AddOrder userData={userData} existingOrder={editData} RefreshData={props?.RefreshData} onClose={handleEditModalClose} /> */}
+        <DialogContent style={{ width: '300px' }}>
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Assign Artist</InputLabel>
+            <Select
+              value={selectedArtist}
+              onChange={(e) => setSelectedArtist(e.target.value)}
+            >
+              {artistList.map((artist) => (
+                <MenuItem key={artist._id} value={artist._id}>
+                  {artist.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {/* <FormControl fullWidth margin="normal">
+            <TextField
+              label="Order Status"
+              value={orderStatus}
+              onChange={(e) => setOrderStatus(e.target.value)}
+            />
+          </FormControl> */}
         </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleEditModalClose}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:ring-2 focus:ring-gray-500"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
+          >
+            Save
+          </Button>
+
+        </DialogActions>
       </Dialog>
 
-      <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteData} />
+      <ConfirmBox
+        bool={confirmBoxView}
+        setConfirmBoxView={setConfirmBoxView}
+        onSubmit={deleteData}
+      />
     </div>
   );
 };
@@ -195,7 +314,7 @@ function stableSort(array, comparator) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
