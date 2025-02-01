@@ -8,13 +8,14 @@ import { Toaster } from 'react-hot-toast';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ReactLoader } from "../components/common/Loading";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function SignIn() {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
   const [userData, setUserData] = useState("");
 
   const { register, handleSubmit, formState: { errors }, getValues } = useForm();
@@ -144,16 +145,24 @@ export default function SignIn() {
                         </div>
                       </div>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-2 relative">
                       <input
                         id="password"
                         name="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"} // Toggle visibility
                         autoComplete="new-password"
                         required
                         {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters long' } })}
                         className={`block p-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errors.password ? 'border-red-500' : ''}`}
                       />
+                      {/* Password Visibility Toggle */}
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </button>
                     </div>
                     {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                   </div>

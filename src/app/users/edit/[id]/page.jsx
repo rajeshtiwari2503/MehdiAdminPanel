@@ -22,6 +22,8 @@ const Edituser = ({ params } ) => {
             setValue('email', user.email);
             setValue('contact', user.contact);
             setValue('password', user.password);
+            
+            setValue('address', user.address);
           
         }
     }, [ id])
@@ -30,9 +32,9 @@ const Edituser = ({ params } ) => {
 
     const getUserById = async ( ) => {
         try {
-            let response = await http_request.get(`/getUserBy/${params.id}`)
+            let response = await http_request.get(`/getProfileById/${params.id}`)
             let { data } = response;
-            setUser(data)
+            setUser(data?.user)
             setId(data?._id)
         }
         catch (err) {
@@ -44,11 +46,11 @@ const Edituser = ({ params } ) => {
     const UpdateUser = async (reqdata) => {
         try {
             setLoading(true)
-            let response = await http_request.patch(`/editUser/${id}`, reqdata)
+            let response = await http_request.patch(`/editUser/${params.id}`, reqdata)
             const { data } = response
             ToastMessage(data)
             setLoading(false)
-            router.push("/user/customer")
+            router.push("/users")
         }
         catch (err) {
             setLoading(false)
@@ -136,6 +138,23 @@ const Edituser = ({ params } ) => {
                             </div>
                             <div>
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Address
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        id="address"
+                                        name="address"
+                                        type="text"
+                                       
+                                        required
+                                        {...register('address', { required: 'address is required', minLength: { value: 8, message: 'address must be at least 8 characters long' } })}
+                                        className={`block p-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errors.password ? 'border-red-500' : ''}`}
+                                    />
+                                </div>
+                                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+                            </div>
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                     Password
                                 </label>
                                 <div className="mt-2">
@@ -161,7 +180,7 @@ const Edituser = ({ params } ) => {
                                 onClick={handleSubmit(onSubmit)}
                                 className="flex   justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Update
+                               {loading ?"Updating...":"Update"} 
                             </button>
                         </div>
                     </div>

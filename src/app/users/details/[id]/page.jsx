@@ -14,23 +14,21 @@ const CutomerDetails = ({ params }) => {
     const [id, setId] = useState("")
     const [user, setUser] = useState("")
     const [loading, setLoading] = useState(false)
-    const [dashData, setData] = React.useState("");
-    const [value, setBrandValue] = React.useState(null);
+   
  
 
     useEffect(() => {
         getUserById()
-        getAllDashboard()
-        setBrandValue({_id:params.id,role:"USER"})
+      
     }, [id])
 
 
 
     const getUserById = async () => {
         try {
-            let response = await http_request.get(`/getUserBy/${params.id}`)
+            let response = await http_request.get(`/getProfileById/${params.id}`)
             let { data } = response;
-            setUser(data)
+            setUser(data?.user)
             setId(data?._id)
         }
         catch (err) {
@@ -39,71 +37,67 @@ const CutomerDetails = ({ params }) => {
     }
 
     const handleEdit = ( ) => {
-        router.push(`/user/customer/edit/${user?._id}`);
+        router.push(`/users/edit/${user?._id}`);
       };
-      const getAllDashboard = async () => {
       
-        try {
-        
-          const endPoint=  
-          `/dashboardDetailsByUserId/${params.id}`
-          let response = await http_request.get(endPoint)
-          let { data } = response;
-    
-          setData(data)
-        }
-        catch (err) {
-          console.log(err);
-        }
-      }
+
 
 
     return (
         <>
 
-            <Sidenav >
-                <div className=" ">
-                    <div className='flex justify-between items-center' >
-                        <div className='' >
-                            <h2 className="mb-5  text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                            User Details
-                            </h2>
-                        </div>
-                        <div onClick={handleEdit} className='flex bg-[#0284c7] hover:bg-[#5396b9] hover:text-black rounded-md p-2 cursor-pointer text-white justify-between items-center '>
-                          <Edit /> <div className='ms-3'>Edit</div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div  >
-                        <div className="m-5 grid md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1 mt-5 gap-4" >
-                            <div className='text-1xl font-semibold'>User Name : </div>
-                            <div className='text-lg font-medium'>{user?.name}</div>
-                            <div className='text-1xl font-semibold'>Email : </div>
-                            <div className='text-lg font-medium'>{user?.email}</div>
-                            <div className='text-1xl font-semibold'>Contact : </div>
-                            <div className='text-lg font-medium'>{user?.contact}</div>
-                            <div className='text-1xl font-semibold'>Password : </div>
-                            <div className='text-lg font-medium'>{user?.password}</div>
-                        </div>
-                    </div>
-                    <div>
-                    <h2 className="  text-xl font-bold leading-9 tracking-tight text-gray-900">
-                                Customer Information
-                            </h2>
-                    {/* <UserDashboard dashData={dashData} userData={value} /> */}
-                    </div>
-                </div>
+<Sidenav>
+      <div>
+        <div className="flex justify-between items-center">
+          <h2 className="mb-5 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            User Details
+          </h2>
+          <div
+            onClick={handleEdit}
+            className="flex bg-[#0284c7] hover:bg-[#5396b9] hover:text-black rounded-md p-2 cursor-pointer text-white justify-between items-center"
+          >
+            <Edit /> <span className="ms-3">Edit</span>
+          </div>
+        </div>
+        <hr />
+        {loading ? (
+          <p className="text-center text-gray-600">Loading...</p>
+        ) : (
+          <div className="m-5 grid md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1 mt-5 gap-4">
+            <div className="text-1xl font-semibold">User Name:</div>
+            <div className="text-lg font-medium">{user?.name}</div>
+            <div className="text-1xl font-semibold">Email:</div>
+            <div className="text-lg font-medium">{user?.email}</div>
+            <div className="text-1xl font-semibold">Contact:</div>
+            <div className="text-lg font-medium">{user?.contact}</div>
+            <div className="text-1xl font-semibold">Password:</div>
+            <div className="text-lg font-medium">{user?.password}</div>
+            <div className="text-1xl font-semibold">Address:</div>
+            <div className="text-lg font-medium">{user?.address}</div>
+            <div className="text-1xl font-semibold">Role:</div>
+            <div className="text-lg font-medium">{user?.role}</div>
+            <div className="text-1xl font-semibold">Verification:</div>
+            <div className="text-lg font-medium">{user?.verification}</div>
+            <div className="text-1xl font-semibold">Referral Code:</div>
+            <div className="text-lg font-medium">{user?.referralCode}</div>
+            <div className="text-1xl font-semibold">Referred By:</div>
+            <div className="text-lg font-medium">{user?.referredBy || "N/A"}</div>
+            <div className="text-1xl font-semibold">Referral Count:</div>
+            <div className="text-lg font-medium">{user?.referralCount}</div>
+            <div className="text-1xl font-semibold">Status:</div>
+            <div className="text-lg font-medium">{user?.status}</div>
+            <div className="text-1xl font-semibold">Created At:</div>
+            <div className="text-lg font-medium">{new Date(user?.createdAt).toLocaleString()}</div>
+            <div className="text-1xl font-semibold">Updated At:</div>
+            <div className="text-lg font-medium">{new Date(user?.updatedAt).toLocaleString()}</div>
+          </div>
+        )}
 
+         
+      </div>
+    </Sidenav>
+    </>
+  );
+};
 
-            </Sidenav>
-        </>
-
-    )
-}
-
-export default CutomerDetails
-
-
-
-
-
+export default CutomerDetails;
