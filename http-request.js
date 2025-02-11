@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // const baseUrl= "http://localhost:5000"
- const baseUrl="https://mehdiappbackend.onrender.com"
+//  const baseUrl="https://mehdiappbackend.onrender.com"
+ const baseUrl="https://mehdi-app-backend.vercel.app"
 
 
 const get=(url)=>{
