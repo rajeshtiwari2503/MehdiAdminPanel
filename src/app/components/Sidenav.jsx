@@ -197,7 +197,7 @@ function Sidenav(props) {
  
   const handleLogout = () => {
     localStorage.removeItem("user")
-    router.push("/")
+    router.push("/sign_in")
   }
 
  
@@ -520,7 +520,7 @@ function Sidenav(props) {
                     )}
 
                   </div>
-                  <div onClick={handleLogout} className='ms-5 w-[30px] h-[30px] bg-red-600 flex justify-center items-center  text-white  font-bold cursor-pointer rounded-full'>
+                  <div onClick={()=>handleLogout()} className='ms-5 w-[30px] h-[30px] bg-red-600 flex justify-center items-center  text-white  font-bold cursor-pointer rounded-full'>
                     <Logout fontSize='large' className='pl-2' />
                   </div>
                 </div>

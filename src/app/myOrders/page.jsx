@@ -9,7 +9,9 @@ import Footer from '../components/website/Footer';
 import Layout from '../components/website/HeaderLayout';
 import axios from 'axios';
 import Link from 'next/link';
-
+import { FaStar } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 const MyOrders = () => {
   const [order, setOrder] = useState(null);
   const [user, setUser] = useState(null);
@@ -340,10 +342,80 @@ const MyOrders = () => {
       </div>
     </div>
   )}
+
+
 </div>
 
       <Footer />
     </>
+  //   <div className="p-6 bg-gray-100 min-h-screen">
+    
+  //   <div className="relative w-full h-64 md:h-80">
+  //     <img
+  //       src={order?.item?.image || "https://via.placeholder.com/800x400"}
+  //       alt={order?.item?.name}
+  //       className="w-full h-full object-cover rounded-lg shadow-md"
+  //     />
+  //     <button
+  //       className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-3"
+       
+  //     >
+  //      <FaHeart className="text-red-500" />  
+  //     </button>
+  //   </div>
+
+   
+  //   <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-6 p-6">
+   
+  //     <div className="flex justify-between items-center">
+  //       <h2 className="text-2xl font-bold text-gray-900">{order?.item?.name || "Product Name"}</h2>
+  //       <div className="flex items-center space-x-1">
+  //         <FaStar className="text-yellow-500" />
+  //         <span className="text-gray-700 font-medium">4.6</span>
+  //         <span className="text-gray-500 text-sm">(456 Reviews)</span>
+  //       </div>
+  //     </div>
+
+  //     <p className="text-gray-600 mt-2">
+  //       Exclusive design available for pre-order. Limited stock only!
+  //     </p>
+
+      
+  //     <div className="mt-4 bg-gray-100 p-4 rounded-lg">
+  //       <div className="flex items-center">
+  //         <span className="text-2xl font-bold text-gray-900">
+  //           ₹{((order?.item?.price * 0.75) || 0).toFixed(2)}
+  //         </span>
+  //         <span className="text-gray-500 line-through ml-2">₹{order?.item?.price}</span>
+  //         <span className="text-green-600 ml-2 text-sm">75% OFF</span>
+  //       </div>
+  //       <p className="text-sm text-gray-500">+ ₹178 taxes & fees</p>
+  //     </div>
+
+      
+  //     <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+  //       <p>✅ Exclusive Pre-Order Access</p>
+  //       <p>✅ Free Shipping Included</p>
+  //       <p>✅ Group Order Available: {order?.item?.groupOrder ? "YES" : "NO"}</p>
+  //       <p>✅ Pay at Delivery Option Available</p>
+  //     </div>
+
+      
+  //     {!isOrderCreated ? (
+  //       <button
+  //         onClick={() => userPayment(order)}
+  //         disabled={loading}
+  //         className={`mt-6 w-full bg-blue-600 text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300 ${
+  //           loading ? "cursor-not-allowed opacity-50" : ""
+  //         }`}
+  //       >
+  //         {loading ? "Processing Order..." : "Confirm Order"}
+  //       </button>
+  //     ) : (
+  //       <p className="text-green-600 mt-6 text-center">🎉 Order Successfully Placed!</p>
+  //     )}
+  //   </div>
+  // </div>
   );
 };
 
