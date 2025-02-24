@@ -139,7 +139,7 @@ const Gallery = () => {
                 </p>
 
 
-                <div className="mt-4 bg-gray-100 p-4 rounded-lg">
+                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
                   <div className="flex items-center">
                     <span className="text-2xl font-bold text-gray-900">
                       ₹{((item?.price * 0.75) || 0).toFixed(2)}

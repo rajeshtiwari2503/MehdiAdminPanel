@@ -366,7 +366,7 @@ const MyOrders = () => {
             <button
               onClick={() => userPayment(order)}
               disabled={loading}
-              className={`mt-6 w-full bg-blue-600 text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300 ${
+              className={`mt-6 w-full p-2 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700 ${
                 loading ? "cursor-not-allowed opacity-50" : ""
               }`}
             >
