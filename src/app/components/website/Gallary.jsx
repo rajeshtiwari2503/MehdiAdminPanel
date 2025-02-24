@@ -5,9 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import http_request from '../../../../http-request';
 import { ReactLoader } from '../common/Loading';
+import { FaStar } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 
 const Gallery = () => {
-  
+
 
   const [selectedImage, setSelectedImage] = useState(null);
   const router = useRouter();
@@ -29,7 +32,7 @@ const Gallery = () => {
   const closeModal = () => {
     setSelectedImage(null); // Close the modal
   };
- 
+
 
   const fetchDesigns = async () => {
     try {
@@ -46,12 +49,12 @@ const Gallery = () => {
   };
 
   const handleOrder = (item) => {
-    const orderData= { item, user };
+    const orderData = { item, user };
     if (user) {
-      if(item?.groupOrder===true){
+      if (item?.groupOrder === true) {
         localStorage.setItem("orderM", JSON.stringify(orderData));
         router.push("/groupOrder");
-      }else{
+      } else {
         localStorage.setItem("orderM", JSON.stringify(orderData));
         router.push("/myOrders");
       }
@@ -61,7 +64,7 @@ const Gallery = () => {
     }
   };
   // console.log(designs);
-  
+  const [fullScreenImage, setFullScreenImage] = useState(null);
   return (
     <div className="container mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
@@ -69,36 +72,92 @@ const Gallery = () => {
       </h1>
 
       {/* Gallery Grid */}
-      {loading===true?<ReactLoader />
-      : 
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {designs?.map((item, index) => (
-        <div
-          key={index}
-          className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg"
-          onClick={() => handleOrder(item)}
-        >
-          {/* Image Section */}
-          <Image
-            src={item?.image}
-            alt={`Mehandi design ${index + 1}`}
-            width={500}
-            height={500}
-            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-    
-          {/* Design Name Section */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <p className="text-white text-lg font-bold">{item?.name}</p>
-          </div>
+      {loading === true ? <ReactLoader />
+        :
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
+          {designs?.map((item, index) => (
+            // <div
+            //   key={index}
+            //   className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg"
+            //   onClick={() => handleOrder(item)}
+            // >
+
+            //   <Image
+            //     src={item?.image}
+            //     alt={`Mehandi design ${index + 1}`}
+            //     width={500}
+            //     height={500}
+            //     className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+            //   />
+
+
+            //   <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+            //     <p className="text-white text-lg font-bold">{item?.name}</p>
+            //   </div>
+            // </div>
+            <div key={index} onClick={() => handleOrder(item)} className=" bg-gray-100 cursor-pointer ">
+
+              {/* <div className="relative w-full h-64 md:h-80">
+                  <img
+                    src={order?.item?.image || "https://via.placeholder.com/800x400"}
+                    alt={order?.item?.name}
+                    className="w-full h-full object-cover rounded-lg shadow-md"
+                  />
+                  <button
+                    className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-3"
+                   
+                  >
+                   <FaHeart className="text-red-500" />  
+                  </button>
+                </div> */}
+              <div>
+                {/* Thumbnail Image */}
+                <img
+                  src={item?.image || "https://via.placeholder.com/800x400"}
+                  alt={item?.name}
+                  className="w-full h-[200px] object-cover rounded-lg shadow-md cursor-pointer"
+                  // onClick={() => setFullScreenImage(item?.image)}
+                />
+
+               
+              </div>
+
+              <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-3">
+
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold text-gray-900">{item?.name || "Product Name"}</h2>
+                  <div className="flex items-center space-x-1">
+                    <FaStar className="text-yellow-500" />
+                    <span className="text-gray-700 font-medium">4.6</span>
+                    <span className="text-gray-500 text-sm">(456 Reviews)</span>
+                  </div>
+                </div>
+
+                <p className="text-gray-600 mt-2">
+                  Exclusive design  {item?.description}. Limited stock only!
+                </p>
+
+
+                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
+                  <div className="flex items-center">
+                    <span className="text-2xl font-bold text-gray-900">
+                      ₹{((item?.price * 0.75) || 0).toFixed(2)}
+                    </span>
+                    <span className="text-gray-500 line-through ml-2">₹{item?.price}</span>
+                    <span className="text-green-600 ml-2 text-sm"> </span>
+                  </div>
+                  {/* <p className="text-sm text-gray-500">+ ₹178 taxes & fees</p> */}
+                </div>
+              </div>
+            </div>
+
+          ))}
         </div>
-      ))}
-    </div>
-    
-    
-    
-}
+
+
+
+      }
 
       {/* Lightbox Modal for clicked image */}
       {selectedImage && (
