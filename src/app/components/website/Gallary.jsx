@@ -117,10 +117,10 @@ const Gallery = () => {
                   src={item?.image || "https://via.placeholder.com/800x400"}
                   alt={item?.name}
                   className="w-full h-[200px] object-cover rounded-lg shadow-md cursor-pointer"
-                  // onClick={() => setFullScreenImage(item?.image)}
+                // onClick={() => setFullScreenImage(item?.image)}
                 />
 
-               
+
               </div>
 
               <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-3">
@@ -129,8 +129,12 @@ const Gallery = () => {
                   <h2 className="text-2xl font-bold text-gray-900">{item?.name || "Product Name"}</h2>
                   <div className="flex items-center space-x-1">
                     <FaStar className="text-yellow-500" />
-                    <span className="text-gray-700 font-medium">4.6</span>
-                    <span className="text-gray-500 text-sm">(456 Reviews)</span>
+                    <span className="text-gray-700 font-medium">
+                      {item?.rating ? item.rating.toFixed(1) : (Math.random() * (5 - 4) + 4).toFixed(1)}
+                    </span>
+                    <span className="text-gray-500 text-sm">
+                      ({item?.reviews || Math.floor(Math.random() * (10000 - 1000) + 1000).toLocaleString()} Reviews)
+                    </span>
                   </div>
                 </div>
 
@@ -139,7 +143,7 @@ const Gallery = () => {
                 </p>
 
 
-                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
+                {/* <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
                   <div className="flex items-center">
                     <span className="text-2xl font-bold text-gray-900">
                       ₹{((item?.price * 0.75) || 0).toFixed(2)}
@@ -147,8 +151,23 @@ const Gallery = () => {
                     <span className="text-gray-500 line-through ml-2">₹{item?.price}</span>
                     <span className="text-green-600 ml-2 text-sm"> </span>
                   </div>
-                  {/* <p className="text-sm text-gray-500">+ ₹178 taxes & fees</p> */}
+               
+                </div> */}
+                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
+                  <div className="flex items-center">
+                    {/* Display Discounted Price */}
+                    <span className="text-2xl font-bold text-gray-900">
+                      ₹{((item?.price))}
+                    </span>
+                    {/* Show Inflated Price (Strikethrough) */}
+                    <span className="text-gray-700 line-through ml-2">
+                      ₹{Math.round(item?.price * 1.2)}
+                    </span>
+                    {/* Show Discount Percentage */}
+                    <span className="text-white ml-2 font-bold text-sm">20% OFF</span>
+                  </div>
                 </div>
+
               </div>
             </div>
 
