@@ -345,10 +345,10 @@ const MyOrders = () => {
           <div className="mt-4 bg-gray-100 p-4 rounded-lg">
             <div className="flex items-center">
               <span className="text-2xl font-bold text-gray-900">
-                ₹{((order?.item?.price * 0.75) || 0).toFixed(2)}
+                ₹{((order?.item?.price  ))  }
               </span>
-              <span className="text-gray-500 line-through ml-2">₹{order?.item?.price}</span>
-              <span className="text-green-600 ml-2 text-sm"> </span>
+              <span className="text-gray-500 line-through ml-2">₹{Math.round(order?.item?.price * 1.2)}</span>
+              <span className="text-green-600 ml-2 text-sm">20% OFF </span>
             </div>
             {/* <p className="text-sm text-gray-500">+ ₹178 taxes & fees</p> */}
           </div>
@@ -396,16 +396,11 @@ const MyOrders = () => {
                 <div className="md:w-1/2">
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">Order Details</h3>
                   <p className="text-gray-600">Design: {item.design}</p>
-                  <p className="text-gray-600">
-                    Original Price: 
-                    <span className="line-through text-gray-500 ml-1">${item.price}</span>
-                  </p>
-                  <p className="text-gray-600">
-                    Discounted Price: 
-                    <span className="text-green-600 ml-1">
-                      ${(item.price * 0.75).toFixed(2)}
-                    </span>
-                  </p>
+                  <span className="text-2xl font-bold text-gray-900">
+                ₹{((order?.item?.price  ))  }
+              </span>
+              <span className="text-gray-500 line-through ml-2">₹{Math.round(order?.item?.price * 1.2)}</span>
+              <span className="text-green-600 ml-2 text-sm">20% OFF </span>
                   <p className="text-gray-600">
                     Group Order: {item.groupOrder === true ? "YES" : "NO"}
                   </p>
