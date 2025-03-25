@@ -397,9 +397,9 @@ const MyOrders = () => {
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">Order Details</h3>
                   <p className="text-gray-600">Design: {item.design}</p>
                   <span className="text-2xl font-bold text-gray-900">
-                ₹{((order?.item?.price  ))  }
+                ₹{((item?.price  ))  }
               </span>
-              <span className="text-gray-500 line-through ml-2">₹{Math.round(order?.item?.price * 1.2)}</span>
+              <span className="text-gray-500 line-through ml-2">₹{Math.round(item?.price * 1.2)}</span>
               <span className="text-green-600 ml-2 text-sm">20% OFF </span>
                   <p className="text-gray-600">
                     Group Order: {item.groupOrder === true ? "YES" : "NO"}
