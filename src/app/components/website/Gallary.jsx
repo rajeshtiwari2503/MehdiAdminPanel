@@ -124,51 +124,42 @@ const Gallery = () => {
               </div>
 
               <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-3">
-
+                {/* Header Section */}
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-gray-900">{item?.name || "Product Name"}</h2>
                   <div className="flex items-center space-x-1">
                     <FaStar className="text-yellow-500" />
                     <span className="text-gray-700 font-medium">
-                      {item?.rating ? item.rating.toFixed(1) : (Math.random() * (5 - 4) + 4).toFixed(1)}
+                      {item?.rating}
                     </span>
                     <span className="text-gray-500 text-sm">
-                      ({item?.reviews || Math.floor(Math.random() * (10000 - 1000) + 1000).toLocaleString()} Reviews)
+                      ({item?.review} Reviews)
                     </span>
                   </div>
                 </div>
 
+                {/* Product Description */}
                 <p className="text-gray-600 mt-2">
-                  Exclusive design  {item?.description}. Limited stock only!
+                  Exclusive design {item?.description}. Limited stock only!
                 </p>
 
-
-                {/* <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
-                  <div className="flex items-center">
-                    <span className="text-2xl font-bold text-gray-900">
-                      ₹{((item?.price * 0.75) || 0).toFixed(2)}
-                    </span>
-                    <span className="text-gray-500 line-through ml-2">₹{item?.price}</span>
-                    <span className="text-green-600 ml-2 text-sm"> </span>
-                  </div>
-               
-                </div> */}
+                {/* Price and Discount Section */}
                 <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-red-700 via-yellow-600 to-yellow-400 transition-all duration-300 group hover:from-yellow-400 hover:via-yellow-600 hover:to-red-700">
                   <div className="flex items-center">
                     {/* Display Discounted Price */}
                     <span className="text-2xl font-bold text-gray-900">
-                      ₹{((item?.price))}
+                      ₹{item?.price}
                     </span>
-                    {/* Show Inflated Price (Strikethrough) */}
+                    {/* Show Original Price (Strikethrough) */}
                     <span className="text-gray-700 line-through ml-2">
-                      ₹{Math.round(item?.price * 1.2)}
+                    ₹{item?.price && item?.discount ? Math.round(+item.price + (+item.price * +item.discount) / 100) : "0"}
                     </span>
                     {/* Show Discount Percentage */}
-                    <span className="text-white ml-2 font-bold text-sm">20% OFF</span>
+                    <span className="text-white ml-2 font-bold text-sm">{item?.discount}% OFF</span>
                   </div>
                 </div>
-
               </div>
+
             </div>
 
           ))}
