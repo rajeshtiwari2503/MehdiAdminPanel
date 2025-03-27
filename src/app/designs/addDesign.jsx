@@ -18,6 +18,9 @@ const AddDesign = ({ existingDesign, categories, RefreshData, onClose }) => {
             formData.append('name', data.name);
             formData.append('description', data.description);
             formData.append('price', data.price);
+            formData.append('review', data.review);
+            formData.append('rating', data.rating);
+            formData.append('discount', data.discount);
             formData.append('status', 'ACTIVE'); // Default status
             formData.append('groupOrder', data.groupOrder || false); // Add groupOrder value
 
@@ -27,8 +30,8 @@ const AddDesign = ({ existingDesign, categories, RefreshData, onClose }) => {
             }
 
             const endpoint = existingDesign?._id ? `/editDesignImage/${existingDesign._id}` : '/addMehndiDesign';
-            const response = existingDesign?._id 
-                ? await http_request.patch(endpoint, formData) 
+            const response = existingDesign?._id
+                ? await http_request.patch(endpoint, formData)
                 : await http_request.post(endpoint, formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
@@ -56,6 +59,9 @@ const AddDesign = ({ existingDesign, categories, RefreshData, onClose }) => {
             setValue('description', existingDesign.description);
             setValue('price', existingDesign.price);
             setValue('status', existingDesign.status);
+            setValue('review', existingDesign.review);
+            setValue('rating', existingDesign.rating);
+            setValue('discount', existingDesign.discount);
             setValue('groupOrder', existingDesign.groupOrder || false); // Set groupOrder value
         }
     }, [existingDesign, setValue]);
@@ -118,7 +124,44 @@ const AddDesign = ({ existingDesign, categories, RefreshData, onClose }) => {
                         />
                         {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>}
                     </div>
+                    <div>
+                        <label htmlFor="review" className="block text-sm font-medium text-gray-900">Review</label>
+                        <input
+                            id="review"
+                            name="review"
+                            type="number"
+                            defaultValue={0}
+                            {...register('review')}
+                            className="block w-full p-3 rounded-md border border-gray-300"
+                        />
+                    </div>
 
+                    {/* Rating Input */}
+                    <div>
+                        <label htmlFor="rating" className="block text-sm font-medium text-gray-900">Rating</label>
+                        <input
+                            id="rating"
+                            name="rating"
+                            type="number"
+                            step="0.1"
+                            defaultValue={0}
+                            {...register('rating')}
+                            className="block w-full p-3 rounded-md border border-gray-300"
+                        />
+                    </div>
+
+                    {/* Discount Input */}
+                    <div>
+                        <label htmlFor="discount" className="block text-sm font-medium text-gray-900">Discount</label>
+                        <input
+                            id="discount"
+                            name="discount"
+                            type="number"
+                            defaultValue={0}
+                            {...register('discount')}
+                            className="block w-full p-3 rounded-md border border-gray-300"
+                        />
+                    </div>
                     {/* Group Order Checkbox */}
                     <div className="flex items-center">
                         <input

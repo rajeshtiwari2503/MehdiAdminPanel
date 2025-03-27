@@ -332,8 +332,8 @@ const MyOrders = () => {
             <h2 className="text-2xl font-bold text-gray-900">{order?.item?.name || "Product Name"}</h2>
             <div className="flex items-center space-x-1">
               <FaStar className="text-yellow-500" />
-              <span className="text-gray-700 font-medium">4.6</span>
-              <span className="text-gray-500 text-sm">(456 Reviews)</span>
+              <span className="text-gray-700 font-medium">       {order?.item?.rating}</span>
+              <span className="text-gray-500 text-sm">({order?.item?.review} Reviews)</span>
             </div>
           </div>
     
@@ -347,8 +347,8 @@ const MyOrders = () => {
               <span className="text-2xl font-bold text-gray-900">
                 ₹{((order?.item?.price  ))  }
               </span>
-              <span className="text-gray-500 line-through ml-2">₹{Math.round(order?.item?.price * 1.2)}</span>
-              <span className="text-green-600 ml-2 text-sm">20% OFF </span>
+              <span className="text-gray-500 line-through ml-2">    ₹{order?.item?.price && order?.item?.discount ? Math.round(+order?.item.price + (+order?.item.price * +order?.item.discount) / 100) : "0"}</span>
+              <span className="text-green-600 ml-2 text-sm">{order?.item?.discount}% OFF </span>
             </div>
             {/* <p className="text-sm text-gray-500">+ ₹178 taxes & fees</p> */}
           </div>
@@ -399,8 +399,8 @@ const MyOrders = () => {
                   <span className="text-2xl font-bold text-gray-900">
                 ₹{((item?.price  ))  }
               </span>
-              <span className="text-gray-500 line-through ml-2">₹{Math.round(item?.price * 1.2)}</span>
-              <span className="text-green-600 ml-2 text-sm">20% OFF </span>
+              <span className="text-gray-500 line-through ml-2">  ₹{item?.price && item?.discount ? Math.round(+item.price + (+item.price * +item.discount) / 100) : "0"}</span>
+              <span className="text-green-600 ml-2 text-sm">{ item?.discount}% OFF </span>
                   <p className="text-gray-600">
                     Group Order: {item.groupOrder === true ? "YES" : "NO"}
                   </p>
